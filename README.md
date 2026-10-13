@@ -17,7 +17,7 @@ Config sway complète au style **neo-brutalism** (bordures noires épaisses, omb
 ## Installation
 
 ```sh
-git clone <url-du-repo> ~/dotfiles
+git clone https://github.com/XenoX/sway-neobrutalism.git ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 ```
