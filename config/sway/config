@@ -237,7 +237,7 @@ set $ws9 "9"
 set $ws10 "10"
 
 ## Monitors
-set $main_monitor "DP-2"
+set $main_monitor "DP-1"
 set $second_monitor "HDMI-A-1"
 set $laptop_monitor "eDP-1"
 

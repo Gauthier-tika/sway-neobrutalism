@@ -24,7 +24,7 @@
     },
     {
         "include": "~/.config/sway/waybar/modules",
-        "output": "DP-2",
+        "output": "DP-1",
         "name": "main-bar",
         "id": "main-bar",
         "layer": "top",
@@ -47,7 +47,7 @@
     },
     // {
     //     "include": "~/.config/sway/waybar/modules",
-    //     "output": "DP-2",
+    //     "output": "DP-1",
     //     "name": "main-bar",
     //     "id": "main-bar",
     //     "layer": "top",

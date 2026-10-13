@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-EXTERNAL_MAIN_MONITOR="DP-2"
+EXTERNAL_MAIN_MONITOR="DP-1"
 EXTERNAL_SECOND_MONITOR="HDMI-A-1"
 
 if swaymsg -t get_outputs | jq -e --arg a "$EXTERNAL_MAIN_MONITOR" --arg b "$EXTERNAL_SECOND_MONITOR" 'any(.[]; .name == $a or .name == $b)' >/dev/null; then
