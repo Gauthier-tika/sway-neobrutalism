@@ -1,0 +1,208 @@
+{
+	// waybar-backlight
+    "backlight": {
+            "format": "{icon}",
+            "format-icons": [
+                "󰃞",
+                "󰃟",
+                "󰃠"
+            ],
+            "tooltip-format": "Luminosité {percent}%",
+            "on-click": "$HOME/.config/sway/scripts/panel brightness",
+            "on-scroll-up": "$HOME/.config/sway/scripts/backlight inc 5",
+            "on-scroll-down": "$HOME/.config/sway/scripts/backlight dec 5",
+            "smooth-scrolling-threshold": 1
+        },
+
+	// waybar-battery
+    "battery": {
+            "interval": 60,
+            "full-at": 100,
+            "states": {
+                "good": 95,
+                "warning": 30,
+                "critical": 15
+            },
+            "format": "{icon}",
+            "format-charging": "󰂄",
+            "format-plugged": "󰚥",
+            "format-full": "󰁹",
+            "format-icons": [
+                "󰂎",
+                "󰁺",
+                "󰁻",
+                "󰁼",
+                "󰁽",
+                "󰁾",
+                "󰁿",
+                "󰂀",
+                "󰂁",
+                "󰂂",
+                "󰁹"
+            ],
+            "tooltip-format": "Batterie {capacity}% · {timeTo}",
+            "tooltip": true
+        },
+
+	// waybar-bluetooth
+    "bluetooth": {
+            "format": "󰂯",
+            "format-on": "󰂯",
+            "format-off": "󰂲",
+            "format-disabled": "󰂲",
+            "format-connected": "󰂱",
+            "format-connected-battery": "󰂱",
+            "tooltip-format": "Bluetooth : {status}",
+            "tooltip-format-connected": "{device_enumerate}",
+            "tooltip-format-enumerate-connected": "{device_alias}",
+            "tooltip-format-enumerate-connected-battery": "{device_alias} · {device_battery_percentage}%",
+            "on-click": "$HOME/.config/sway/scripts/panel bluetooth"
+        },
+
+	// waybar-clock
+    "clock": {
+            "interval": 60,
+            "format": "󰥔 {:%H:%M}",
+            "tooltip-format": "{:%A %d %B %Y}",
+            "locale": "fr_FR.UTF-8",
+            "on-click": "$HOME/.config/sway/scripts/panel calendar"
+        },
+
+	// waybar-idle-inhibitor
+    "idle_inhibitor": {
+         "format": "{icon}",
+         "format-icons": {
+             "activated": " ",
+             "deactivated": " "
+         },
+         "timeout": 30
+    },
+
+	// neo brutalism light/dark switch
+    "custom/theme": {
+        "exec": "$HOME/.config/sway/waybar/themeswitch",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 8,
+        "format": "{}",
+        "tooltip": true,
+        "escape": false,
+        "on-click": "$HOME/.config/sway/theme/neobrutal.sh toggle && pkill -RTMIN+8 -x waybar",
+    },
+
+	// waybar-spotify
+    "custom/spotify": {
+        "exec": "$HOME/.config/sway/waybar/spotify",
+        "interval": 1,
+        "format": "{}",
+        "tooltip": true,
+        "max-length": 45,
+        "on-click": "playerctl play-pause",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next",
+        "on-scroll-up": "playerctl position 05+",
+        "on-scroll-down": "playerctl position 05-",
+        "smooth-scrolling-threshold": 1,
+    },
+
+	// waybar-player
+    "custom/player": {
+        "exec": "$HOME/.config/sway/waybar/player",
+        "return-type": "json",
+        "interval": 1,
+        "format": "{}",
+        "tooltip": true,
+        "max-length": 45,
+        "on-click": "playerctl --player=tidal,spotify,%any play-pause",
+        "on-click-middle": "playerctl --player=tidal,spotify,%any previous",
+        "on-click-right": "playerctl --player=tidal,spotify,%any next",
+        "on-scroll-up": "playerctl --player=tidal,spotify,%any position 05+",
+        "on-scroll-down": "playerctl --player=tidal,spotify,%any position 05-",
+        "smooth-scrolling-threshold": 1,
+    },
+
+	// waybar-network
+    "network": {
+            "interval": 5,
+            "format-wifi": "{icon}",
+            "format-icons": [
+                "󰤟",
+                "󰤢",
+                "󰤥",
+                "󰤨"
+            ],
+            "format-ethernet": "󰈀",
+            "format-linked": "󰈀",
+            "format-disconnected": "󰤮",
+            "format-disabled": "󰤭",
+            "tooltip-format-wifi": "{essid} · {signalStrength}%",
+            "tooltip-format-ethernet": "{ifname} · {ipaddr}/{cidr}",
+            "tooltip-format-disconnected": "Déconnecté",
+            "on-click": "$HOME/.config/sway/scripts/panel wifi"
+        },
+
+	// waybar-pulseaudio
+    "pulseaudio": {
+            "format": "{icon}{format_source}",
+            "format-muted": "󰝟{format_source}",
+            "format-bluetooth": "󰂰{format_source}",
+            "format-bluetooth-muted": "󰝟{format_source}",
+            "format-source": "",
+            "format-source-muted": " 󰍭",
+            "format-icons": {
+                "default": [
+                    "󰕿",
+                    "󰖀",
+                    "󰕾"
+                ]
+            },
+            "tooltip-format": "{desc} · {volume}%",
+            "scroll-step": 5.0,
+            "on-click": "$HOME/.config/sway/scripts/panel audio",
+            "on-click-right": "pulsemixer --toggle-mute",
+            "smooth-scrolling-threshold": 1
+        },
+
+	// waybar-sway-mode
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+	// waybar-sway-window
+    "sway/window": {
+        "format": "{}",
+        "max-length": 50,
+        "icon": false,
+    },
+
+	// waybar-sway-workspaces
+    "sway/workspaces": {
+         "disable-scroll": false,
+         "disable-click": false,
+         "all-outputs": true,
+         "format": "{icon}",
+         "format-icons": {
+             "1": "1",
+             "2": "2",
+             "3": "3",
+             "4": "4",
+             "5": "5",
+             "6": "6",
+             "7": "7",
+             "8": "8",
+             "9": "9",
+             "10": "10"
+         },
+        "smooth-scrolling-threshold": 1,
+        "disable-scroll-wraparound": false,
+        "enable-bar-scroll": false,
+        "disable-markup": false,
+        "current-only": false,
+    },
+
+	// waybar-tray
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+    },
+}

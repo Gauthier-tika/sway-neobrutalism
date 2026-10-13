@@ -1,0 +1,2 @@
+# AUR packages (installed with yay / paru, bootstrapped if missing)
+wlogout

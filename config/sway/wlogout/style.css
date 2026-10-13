@@ -1,0 +1,66 @@
+/** ********** Import Colors ********** **/
+@import "./colors.css";
+
+/** ********** Fonts ********** **/
+* {
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", archcraft, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+window {
+	background-color: alpha(@bg, 0.92);
+}
+
+button {
+	background-color: @surface;
+	color: @ink;
+	border: 3px solid @border;
+	border-radius: 0px;
+	box-shadow: 6px 6px 0px 0px @shadow;
+	margin: 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 40%;
+}
+
+button:focus, button:active, button:hover {
+	color: @ink;
+	border: 3px solid @border;
+	box-shadow: 12px 12px 0px 0px @shadow;
+	outline-style: none;
+}
+
+button:active {
+	box-shadow: 0px 0px 0px 0px @shadow;
+}
+
+#lock {
+    background-color: @yellow;
+    background-image: image(url("icons-ink/lock.png"), url("/usr/share/wlogout/icons/lock.png"));
+}
+
+#logout {
+    background-color: @cyan;
+    background-image: image(url("icons-ink/logout.png"), url("/usr/share/wlogout/icons/logout.png"));
+}
+
+#suspend {
+    background-color: @blue;
+    background-image: image(url("icons-ink/suspend.png"), url("/usr/share/wlogout/icons/suspend.png"));
+}
+
+#hibernate {
+    background-color: @purple;
+    background-image: image(url("icons-ink/hibernate.png"), url("/usr/share/wlogout/icons/hibernate.png"));
+}
+
+#shutdown {
+    background-color: @red;
+    background-image: image(url("icons-ink/shutdown.png"), url("/usr/share/wlogout/icons/shutdown.png"));
+}
+
+#reboot {
+    background-color: @green;
+    background-image: image(url("icons-ink/reboot.png"), url("/usr/share/wlogout/icons/reboot.png"));
+}

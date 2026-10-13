@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2025 Aditya Shakya <adi1090x@gmail.com>
+##
+## Current Lockscreen ---------------------------------------
+
+DIR="$HOME/.config/sway"
+
+#bash "$DIR"/scripts/lockscreen
+if command -v hyprlock >/dev/null 2>&1; then
+	hyprlock --config "$DIR"/hyprlock.conf &
+else
+	source "$DIR/theme/neobrutal/$("$DIR"/theme/neobrutal.sh status).bash"
+	swaylock -f -c "${bg#\#}" &
+fi

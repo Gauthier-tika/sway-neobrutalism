@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+## Portable backlight control : uses `light` when available, else `brightnessctl`.
+## Usage: backlight get | set <pct> | inc <pct> | dec <pct>
+
+cmd="$1"; val="${2:-5}"
+
+if command -v light >/dev/null 2>&1; then
+	case "$cmd" in
+		get) LC_ALL=C printf '%.0f\n' "$(light -G)" ;;
+		set) light -S "$val" ;;
+		inc) light -A "$val" ;;
+		dec) light -U "$val" ;;
+	esac
+elif command -v brightnessctl >/dev/null 2>&1; then
+	case "$cmd" in
+		get) echo $(( $(brightnessctl -m get) * 100 / $(brightnessctl -m max) )) ;;
+		set) brightnessctl -q set "${val}%" ;;
+		inc) brightnessctl -q set "+${val}%" ;;
+		dec) brightnessctl -q set "${val}%-" ;;
+	esac
+else
+	echo "backlight: install light or brightnessctl" >&2
+	exit 1
+fi

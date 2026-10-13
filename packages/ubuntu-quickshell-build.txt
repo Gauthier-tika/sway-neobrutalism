@@ -1,0 +1,37 @@
+# Build dependencies for Quickshell (needs Qt >= 6.6 : Ubuntu 25.04+)
+build-essential
+cmake
+ninja-build
+pkg-config
+spirv-tools
+libcli11-dev
+libdrm-dev
+libgbm-dev
+libegl-dev
+libgl-dev
+libjemalloc-dev
+libpipewire-0.3-dev
+libpam0g-dev
+libpolkit-agent-1-dev
+libpolkit-gobject-1-dev
+libglib2.0-dev
+libwayland-dev
+wayland-protocols
+libxcb1-dev
+libvulkan-dev
+qt6-base-dev
+qt6-base-private-dev
+qt6-declarative-dev
+qt6-declarative-private-dev
+qt6-shadertools-dev
+qt6-wayland-dev
+qt6-wayland-private-dev
+qt6-svg-dev
+# runtime QML modules
+qml6-module-qtquick
+qml6-module-qtquick-window
+qml6-module-qtquick-layouts
+qml6-module-qtquick-controls
+qml6-module-qtqml-workerscript
+qml6-module-qtquick-templates
+qt6-wayland

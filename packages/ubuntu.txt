@@ -1,0 +1,72 @@
+# apt packages. Missing ones (older releases) are skipped with a warning.
+
+# --- wayland / sway ---
+sway
+swaybg
+swayidle
+swaylock
+hyprlock
+xwayland
+xdg-desktop-portal-wlr
+xdg-user-dirs
+policykit-1-gnome
+
+# --- bar, launchers, notifications ---
+waybar
+mako-notifier
+wofi
+rofi
+libnotify-bin
+wlogout
+
+# --- terminals ---
+alacritty
+kitty
+foot
+
+# --- audio / media ---
+pipewire
+pipewire-pulse
+wireplumber
+pulsemixer
+pavucontrol
+playerctl
+mpd
+mpc
+
+# --- network / bluetooth ---
+network-manager
+network-manager-gnome
+bluez
+blueman
+
+# --- tools used by scripts ---
+brightnessctl
+grim
+slurp
+wl-clipboard
+hyprpicker
+imagemagick
+jq
+yad
+viewnior
+pinentry-gnome3
+psmisc
+ncal
+thunar
+libglib2.0-bin
+gsettings-desktop-schemas
+
+# --- fonts & themes ---
+fonts-jetbrains-mono
+fonts-noto-core
+fonts-noto-color-emoji
+papirus-icon-theme
+adw-gtk3
+
+# --- install script itself ---
+git
+curl
+unzip
+fontconfig
+ca-certificates

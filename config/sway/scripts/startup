@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Kill already running process
+_ps=(waybar mako)
+for _prs in "${_ps[@]}"; do
+  if [[ $(pidof "${_prs}") ]]; then
+    killall -9 "${_prs}"
+  fi
+done
+
+# Polkit agent
+if [[ -x /usr/lib/xfce-polkit/xfce-polkit ]]; then
+  pidof xfce-polkit >/dev/null || /usr/lib/xfce-polkit/xfce-polkit &
+else
+  for agent in /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
+               /usr/libexec/polkit-gnome-authentication-agent-1 \
+               /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1; do
+    if [[ -x "$agent" ]]; then
+      pgrep -f polkit-gnome-authentication-agent-1 >/dev/null || "$agent" &
+      break
+    fi
+  done
+fi
+
+# Lauch notification daemon (mako)
+~/.config/sway/scripts/notifications &
+
+# Lauch statusbar (waybar)
+~/.config/sway/scripts/statusbar &
+
+# Launch panels (quickshell) — no-op if already running
+command -v qs >/dev/null && QT_QPA_PLATFORM=wayland qs -p ~/.config/sway/quickshell -n -d
+
+# Start network manager applet
+# nm-applet --indicator &   # replaced by the quickshell wifi panel
+
+# Eyes saver
+#wlsunset -l 50.3590 -L 3.52506 &
+
+# Start mpd
+exec mpd &

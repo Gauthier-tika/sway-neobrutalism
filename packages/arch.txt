@@ -1,0 +1,74 @@
+# Official repos (pacman). One package per line, '#' for comments.
+
+# --- wayland / sway ---
+sway
+swaybg
+swayidle
+swaylock
+hyprlock
+xorg-xwayland
+xdg-desktop-portal-wlr
+xdg-user-dirs
+polkit-gnome
+
+# --- bar, panels, launchers, notifications ---
+waybar
+quickshell
+mako
+wofi
+rofi
+libnotify
+
+# --- terminals ---
+alacritty
+kitty
+foot
+
+# --- audio / media ---
+pipewire
+pipewire-pulse
+wireplumber
+pulsemixer
+pavucontrol
+playerctl
+mpd
+mpc
+
+# --- network / bluetooth ---
+networkmanager
+network-manager-applet
+bluez
+bluez-utils
+blueman
+
+# --- tools used by scripts ---
+brightnessctl
+grim
+slurp
+wl-clipboard
+hyprpicker
+imagemagick
+jq
+yad
+viewnior
+pinentry
+psmisc
+util-linux
+thunar
+glib2
+gsettings-desktop-schemas
+
+# --- fonts & themes ---
+ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
+ttf-nerd-fonts-symbols
+noto-fonts
+noto-fonts-emoji
+papirus-icon-theme
+adw-gtk-theme
+
+# --- install script itself ---
+git
+curl
+unzip
+base-devel

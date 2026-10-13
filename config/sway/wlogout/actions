@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+
+if [[ "$1" == '--shutdown' ]]; then
+	systemctl poweroff
+elif [[ "$1" == '--reboot' ]]; then
+	systemctl reboot
+elif [[ "$1" == '--hibernate' ]]; then
+	systemctl hibernate
+elif [[ "$1" == '--lock' ]]; then
+	~/.config/sway/scripts/current_lock
+elif [[ "$1" == '--suspend' ]]; then
+	mpc -q pause
+	pulsemixer --mute
+	~/.config/sway/scripts/current_lock
+	systemctl suspend
+elif [[ "$1" == '--logout' ]]; then
+	swaymsg exit
+fi

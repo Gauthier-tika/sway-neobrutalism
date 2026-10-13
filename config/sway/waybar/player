@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+## Waybar module : current track (json, markup-escaped)
+
+PLAYERS="tidal-hifi,spotify,%any"
+PLAY=$'\U000F040A'    # nf-md-play
+PAUSE=$'\U000F03E4'   # nf-md-pause
+NOTE=$'\U000F075A'    # nf-md-music_note
+
+status="$(playerctl --player="$PLAYERS" status 2>/dev/null)"
+track="$(playerctl --player="$PLAYERS" metadata --format '{{ artist }} - {{ title }}' 2>/dev/null)"
+track="${track#' - '}"
+
+# escape pango markup (& < >) so titles like "A & B" don't blank the module
+esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' <<< "$1"; }
+
+case "$status" in
+	Playing) text="$PLAY  $(esc "$track")"; tooltip="Lecture : $(esc "$track")"; class="playing" ;;
+	Paused)  text="$PAUSE  $(esc "$track")"; tooltip="En pause : $(esc "$track")"; class="paused" ;;
+	*)       text="$NOTE  Pas de musique"; tooltip="Aucun lecteur"; class="offline" ;;
+esac
+
+jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+	'{text: $text, tooltip: $tooltip, class: $class, alt: $class}'
