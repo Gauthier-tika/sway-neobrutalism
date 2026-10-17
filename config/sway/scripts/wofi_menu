@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 CONFIG="$HOME/.config/sway/wofi/config"
-STYLE="$HOME/.config/sway/wofi/style.css"
+WOFI_DIR="$HOME/.config/sway/wofi"
+
+## wofi loads the stylesheet as raw data, so a relative @import is resolved
+## against the current directory and fails. Inline the palette instead.
+STYLE="${XDG_RUNTIME_DIR:-/tmp}/wofi-neobrutal.css"
+{ cat "$WOFI_DIR/colors.css"; grep -v '^@import' "$WOFI_DIR/style.css"; } > "$STYLE"
 
 if [[ ! $(pidof wofi) ]]; then
 	wofi --show drun --prompt 'Apps' --conf "${CONFIG}" --style "${STYLE}"
