@@ -24,10 +24,17 @@ button {
 	background-size: 40%;
 }
 
-button:focus, button:active, button:hover {
+button:hover {
 	color: @ink;
-	border: 3px solid @border;
 	box-shadow: 12px 12px 0px 0px @shadow;
+	outline-style: none;
+}
+
+/* current choice : thick pink frame (border + inset ring, no layout shift) */
+button:focus {
+	color: @ink;
+	border: 3px solid @pink;
+	box-shadow: inset 0px 0px 0px 3px @pink, 12px 12px 0px 0px @shadow;
 	outline-style: none;
 }
 
