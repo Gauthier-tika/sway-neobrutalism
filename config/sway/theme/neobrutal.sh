@@ -5,7 +5,7 @@
 ## Usage: neobrutal.sh light | dark | toggle | apply | status
 ##        neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
 ##        neobrutal.sh cursor-size 24|32|48|72|default
-##        neobrutal.sh zoom 100|125|150|175|200|default
+##        neobrutal.sh zoom 80|90|100|125|150|default
 
 DIR="$HOME/.config/sway"
 THEME_DIR="$DIR/theme/neobrutal"
@@ -15,7 +15,7 @@ ACCENTS=(yellow red blue green purple orange cyan pink)
 CURSOR_SIZE_FILE="$DIR/theme/.neobrutal_cursor_size"
 CURSOR_SIZES=(24 32 48 72)   # the sizes theme/cursor/build.sh renders
 ZOOM_FILE="$DIR/theme/.neobrutal_zoom"
-ZOOMS=(100 125 150 175 200)  # percent, = sway output scale
+ZOOMS=(80 90 100 125 150)  # percent, = sway output scale
 WALL_DIR="$DIR/wallpapers"
 
 current_mode() {
@@ -72,8 +72,10 @@ apply_zoom() {
 
 	# live : only when the scale changes (re-applying it makes outputs flicker)
 	local current
-	current="$(swaymsg -t get_outputs 2>/dev/null | jq -r '[.[] | select(.active) | .scale] | unique | join(" ")')" || return 0
-	[[ -z "$current" || "$current" == "$(awk -v s="$scale" 'BEGIN { printf "%g", s }')" ]] && return 0
+	current="$(swaymsg -t get_outputs 2>/dev/null | jq -r '.[] | select(.active) | .scale')" || return 0
+	[[ -z "$current" ]] && return 0
+	# sway reports 0.8 as 0.80000001… : compare with a tolerance
+	awk -v s="$scale" '{ d = $1 - s; if (d > 0.001 || d < -0.001) changed = 1 } END { exit !changed }' <<< "$current" || return 0
 	while read -r line; do
 		[[ "$line" == output* ]] && cmds+=("$line")
 	done < "$DIR/sway-zoom"
