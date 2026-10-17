@@ -50,7 +50,8 @@ apply_zoom_choice() {
 ## the scale too (otherwise screens overlap or leave a gap between them).
 apply_zoom() {
 	local scale outputs name x y cmds=()
-	scale="$(awk -v z="$zoom" 'BEGIN { printf "%g", z / 100 }')"
+	# LC_ALL=C : mawk (Ubuntu) follows the locale and would write 1,1 instead of 1.1
+	scale="$(LC_ALL=C awk -v z="$zoom" 'BEGIN { printf "%g", z / 100 }')"
 	# "output <name|$var> pos X Y" lines of config, $vars resolved from "set $var NAME"
 	outputs="$(awk '
 		$1 == "set" && $2 ~ /^\$/ { v = $3; gsub(/"/, "", v); vars[$2] = v }
@@ -65,8 +66,8 @@ apply_zoom() {
 		while read -r name x y; do
 			[[ -n "$name" ]] || continue
 			printf 'output %s pos %d %d\n' "$name" \
-				"$(awk -v p="$x" -v s="$scale" 'BEGIN { printf "%d", p / s + 0.5 }')" \
-				"$(awk -v p="$y" -v s="$scale" 'BEGIN { printf "%d", p / s + 0.5 }')"
+				"$(LC_ALL=C awk -v p="$x" -v s="$scale" 'BEGIN { printf "%d", p / s + 0.5 }')" \
+				"$(LC_ALL=C awk -v p="$y" -v s="$scale" 'BEGIN { printf "%d", p / s + 0.5 }')"
 		done <<< "$outputs"
 	} > "$DIR/sway-zoom"
 
@@ -75,7 +76,7 @@ apply_zoom() {
 	current="$(swaymsg -t get_outputs 2>/dev/null | jq -r '.[] | select(.active) | .scale')" || return 0
 	[[ -z "$current" ]] && return 0
 	# sway reports 0.8 as 0.80000001… : compare with a tolerance
-	awk -v s="$scale" '{ d = $1 - s; if (d > 0.001 || d < -0.001) changed = 1 } END { exit !changed }' <<< "$current" || return 0
+	LC_ALL=C awk -v s="$scale" '{ d = $1 - s; if (d > 0.001 || d < -0.001) changed = 1 } END { exit !changed }' <<< "$current" || return 0
 	while read -r line; do
 		[[ "$line" == output* ]] && cmds+=("$line")
 	done < "$DIR/sway-zoom"

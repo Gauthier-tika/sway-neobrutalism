@@ -10,6 +10,8 @@
 # Needs : git, python-pillow, rsvg-convert, xcursorgen
 
 set -euo pipefail
+# mawk (Ubuntu) follows the locale : keep "." as the decimal separator in the SVG
+export LC_ALL=C
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ICONS="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
