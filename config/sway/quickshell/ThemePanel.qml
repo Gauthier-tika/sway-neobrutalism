@@ -21,7 +21,7 @@ Card {
     readonly property string accentName: pendingAccent !== "" ? pendingAccent : (Theme.c.accent_name ?? "yellow")
     readonly property var cursorSizes: Theme.c.cursor_sizes ?? [24, 32, 48, 72]
     readonly property int cursorSize: pendingSize !== 0 ? pendingSize : (Theme.c.cursor_size ?? 24)
-    readonly property var zooms: Theme.c.zooms ?? [80, 90, 100, 125, 150]
+    readonly property var zooms: Theme.c.zooms ?? [80, 90, 100, 110, 120]
     readonly property int zoom: pendingZoom !== 0 ? pendingZoom : (Theme.c.zoom ?? 100)
 
     Connections {

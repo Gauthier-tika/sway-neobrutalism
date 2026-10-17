@@ -5,7 +5,7 @@
 ## Usage: neobrutal.sh light | dark | toggle | apply | status
 ##        neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
 ##        neobrutal.sh cursor-size 24|32|48|72|default
-##        neobrutal.sh zoom 80|90|100|125|150|default
+##        neobrutal.sh zoom 80|90|100|110|120|default
 
 DIR="$HOME/.config/sway"
 THEME_DIR="$DIR/theme/neobrutal"
@@ -15,7 +15,7 @@ ACCENTS=(yellow red blue green purple orange cyan pink)
 CURSOR_SIZE_FILE="$DIR/theme/.neobrutal_cursor_size"
 CURSOR_SIZES=(24 32 48 72)   # the sizes theme/cursor/build.sh renders
 ZOOM_FILE="$DIR/theme/.neobrutal_zoom"
-ZOOMS=(80 90 100 125 150)  # percent, = sway output scale
+ZOOMS=(80 90 100 110 120)  # percent, = sway output scale
 WALL_DIR="$DIR/wallpapers"
 
 current_mode() {
