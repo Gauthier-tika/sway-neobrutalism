@@ -15,14 +15,18 @@ Card {
     // what was just clicked, until colors.json catches up (the switch takes ~1s)
     property string pendingMode: ""
     property string pendingAccent: ""
+    property int pendingSize: 0
     readonly property bool dark: pendingMode !== "" ? pendingMode === "dark" : Theme.dark
     readonly property string accentName: pendingAccent !== "" ? pendingAccent : (Theme.c.accent_name ?? "yellow")
+    readonly property var cursorSizes: Theme.c.cursor_sizes ?? [24, 32, 48, 72]
+    readonly property int cursorSize: pendingSize !== 0 ? pendingSize : (Theme.c.cursor_size ?? 24)
 
     Connections {
         target: Theme
         function onCChanged() {
             panel.pendingMode = "";
             panel.pendingAccent = "";
+            panel.pendingSize = 0;
         }
     }
 
@@ -36,6 +40,12 @@ Card {
         if (name === Theme.c.accent_name) return;
         panel.pendingAccent = name;
         Quickshell.execDetached([panel.ctl, "accent", name]);
+    }
+
+    function setCursorSize(size) {
+        if (size === Theme.c.cursor_size) return;
+        panel.pendingSize = size;
+        Quickshell.execDetached([panel.ctl, "cursor-size", String(size)]);
     }
 
     PanelHeader {
@@ -93,6 +103,28 @@ Card {
                 icon: current ? "󰄬" : ""
                 text: panel.labels[modelData] ?? modelData
                 onClicked: panel.setAccent(modelData)
+            }
+        }
+    }
+
+    SectionLabel { text: "Taille du curseur" }
+
+    Row {
+        id: sizes
+        width: parent.width
+        spacing: 8
+
+        Repeater {
+            model: panel.cursorSizes
+
+            BButton {
+                required property int modelData
+                width: (sizes.width - (panel.cursorSizes.length - 1) * sizes.spacing) / panel.cursorSizes.length
+                fontSize: 13
+                icon: "󰇀"
+                text: modelData
+                active: modelData === panel.cursorSize
+                onClicked: panel.setCursorSize(modelData)
             }
         }
     }

@@ -16,6 +16,8 @@ ICONS="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 SIMP1E_REPO="https://gitlab.com/cursors/simp1e.git"
 SIMP1E_REF="f8f8f3c09dd0aa31cc9bc5499c683aad025984be"
 ACCENTS=(yellow red blue green purple orange cyan pink)
+# rendered sizes : keep in sync with CURSOR_SIZES in theme/neobrutal.sh
+SIZES=24,32,48,72
 # shadow offset, in template units (one cursor = 24 units)
 OFFSET=1.5
 
@@ -43,7 +45,7 @@ to="$(awk -v o="$OFFSET" 'BEGIN { printf "translate(%g,%g)", 4 + o, 32 + o }')"
 sed -i "${line},$((line + 2))s/translate(4,32)/$to/" "$svg"
 grep -A2 'inkscape:label="shadows"' "$svg" | grep -q "translate(4,32)" && { echo "shadow offset patch failed" >&2; exit 1; }
 
-"$tmp/simp1e/build.sh" --include=cursors.svg >/dev/null
+"$tmp/simp1e/build.sh" --include=cursors.svg --sizes="$SIZES" >/dev/null
 
 mkdir -p "$ICONS"
 for a in "${ACCENTS[@]}"; do

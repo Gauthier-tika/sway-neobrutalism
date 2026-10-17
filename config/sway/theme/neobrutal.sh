@@ -4,12 +4,15 @@
 ##
 ## Usage: neobrutal.sh light | dark | toggle | apply | status
 ##        neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
+##        neobrutal.sh cursor-size 24|32|48|72|default
 
 DIR="$HOME/.config/sway"
 THEME_DIR="$DIR/theme/neobrutal"
 STATE_FILE="$DIR/theme/.neobrutal_mode"
 ACCENT_FILE="$DIR/theme/.neobrutal_accent"
 ACCENTS=(yellow red blue green purple orange cyan pink)
+CURSOR_SIZE_FILE="$DIR/theme/.neobrutal_cursor_size"
+CURSOR_SIZES=(24 32 48 72)   # the sizes theme/cursor/build.sh renders
 WALL_DIR="$DIR/wallpapers"
 
 current_mode() {
@@ -29,6 +32,14 @@ apply_accent_choice() {
 		accent_name="$name"
 	fi
 	cursor_theme="Neobrutal-${accent_name^}"
+}
+
+## Cursor size picked in the theme panel. No file = the palette default.
+apply_cursor_size_choice() {
+	local size
+	size="$(cat "$CURSOR_SIZE_FILE" 2>/dev/null)"
+	[[ " ${CURSOR_SIZES[*]} " == *" $size "* ]] && cursor_size="$size"
+	return 0
 }
 
 ## Wallpaper : flat bg + dot grid tile (same as the SDDM theme) ----------
@@ -382,6 +393,7 @@ apply_quickshell() {
 		{
 		  "mode": "$MODE", "accent_name": "$accent_name",
 		  "accents": [$(printf '"%s",' "${ACCENTS[@]}" | sed 's/,$//')],
+		  "cursor_size": $cursor_size, "cursor_sizes": [$(IFS=,; echo "${CURSOR_SIZES[*]}")],
 		  "bg": "$bg", "surface": "$surface", "fg": "$fg", "ink": "$ink",
 		  "border": "$border", "shadow": "$shadow", "muted": "$muted",
 		  "main": "$main", "accent": "$accent",
@@ -425,6 +437,7 @@ apply_all() {
 	# shellcheck source=/dev/null
 	source "$THEME_DIR/$MODE.bash"
 	apply_accent_choice
+	apply_cursor_size_choice
 	gtk_fallbacks
 	echo "$MODE" > "$STATE_FILE"
 
@@ -459,5 +472,15 @@ case "$1" in
 		fi
 		apply_all "$(current_mode)"
 		;;
-	*)          echo "Usage: ${0##*/} light | dark | toggle | apply | status | accent <color>"; exit 1 ;;
+	cursor-size)
+		if [[ "$2" == default ]]; then
+			rm -f "$CURSOR_SIZE_FILE"
+		elif [[ " ${CURSOR_SIZES[*]} " == *" $2 "* ]]; then
+			echo "$2" > "$CURSOR_SIZE_FILE"
+		else
+			echo "Usage: ${0##*/} cursor-size $(IFS="|"; echo "${CURSOR_SIZES[*]}")|default"; exit 1
+		fi
+		apply_all "$(current_mode)"
+		;;
+	*)          echo "Usage: ${0##*/} light | dark | toggle | apply | status | accent <color> | cursor-size <px>"; exit 1 ;;
 esac
