@@ -25,9 +25,18 @@ get_icon() {
 	fi
 }
 
+# 20-cell block bar for the notification body : bar <percent>
+bar() {
+	local n=$(( ($1 + 2) / 5 )) i out=""
+	(( n > 20 )) && n=20; (( n < 0 )) && n=0
+	for ((i = 0; i < 20; i++)); do (( i < n )) && out+="█" || out+="░"; done
+	printf '%s  %s%%' "$out" "$1"
+}
+
 # Notify
 notify_user() {
-	notify-send -h string:x-canonical-private-synchronous:sys-notify-backlight -u low -i "$icon" "Brightness: $(get_backlight)"
+	local b; b="$("$HOME/.config/sway/scripts/backlight" get)"
+	notify-send -h string:x-canonical-private-synchronous:sys-notify-backlight -u low -c osd -i "$icon" "Brightness" "$(bar "$b")"
 }
 
 # Increase brightness

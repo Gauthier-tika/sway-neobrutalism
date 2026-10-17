@@ -5,7 +5,15 @@
 ## Script To Manage Speaker Volume For Archcraft (in Wayland).
 
 iDIR="$HOME/.config/sway/mako/icons"
-notify_cmd='notify-send -h string:x-canonical-private-synchronous:sys-notify-volume -u low'
+notify_cmd='notify-send -h string:x-canonical-private-synchronous:sys-notify-volume -u low -c osd'
+# 20-cell block bar for the notification body : bar <percent>
+bar() {
+	local n=$(( ($1 + 2) / 5 )) i out=""
+	(( n > 20 )) && n=20; (( n < 0 )) && n=0
+	for ((i = 0; i < 20; i++)); do (( i < n )) && out+="█" || out+="░"; done
+	printf '%s  %s%%' "$out" "$1"
+}
+
 
 # Get Volume
 get_volume() {
@@ -28,7 +36,8 @@ get_icon() {
 
 # Notify
 notify_user() {
-	${notify_cmd} -i "$icon" "Volume : $(get_volume)%"
+	local v; v="$(get_volume)"
+	${notify_cmd} -i "$icon" "Volume" "$(bar "$v")"
 }
 
 # Increase Volume
