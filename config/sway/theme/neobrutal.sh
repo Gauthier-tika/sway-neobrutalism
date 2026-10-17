@@ -49,11 +49,13 @@ apply_sway() {
 		client.background        $bg
 
 		output * bg $WALLPAPER tile
+		seat * xcursor_theme $cursor_theme $cursor_size
 
 		exec_always {
 		    gsettings set org.gnome.desktop.interface gtk-theme '$gtk_theme'
 		    gsettings set org.gnome.desktop.interface icon-theme '$gtk_icons'
 		    gsettings set org.gnome.desktop.interface cursor-theme '$cursor_theme'
+		    gsettings set org.gnome.desktop.interface cursor-size $cursor_size
 		    gsettings set org.gnome.desktop.interface color-scheme '$gtk_scheme'
 		}
 	_EOF_
@@ -64,10 +66,12 @@ apply_sway() {
 	swaymsg -q "client.unfocused $border $bg $fg $border $border" 2>/dev/null
 	swaymsg -q "client.urgent $border $red $ink $red $red" 2>/dev/null
 	swaymsg -q "client.placeholder $border $bg $fg $border $border" 2>/dev/null
+	swaymsg -q "seat * xcursor_theme $cursor_theme $cursor_size" 2>/dev/null
 
 	gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 	gsettings set org.gnome.desktop.interface icon-theme "$gtk_icons"
 	gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+	gsettings set org.gnome.desktop.interface cursor-size "$cursor_size"
 	gsettings set org.gnome.desktop.interface color-scheme "$gtk_scheme"
 }
 

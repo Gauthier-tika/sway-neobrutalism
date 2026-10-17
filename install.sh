@@ -243,8 +243,17 @@ link_config() {
 	fi
 
 	find "$TARGET/" -path '*/scripts/*' -type f -exec chmod +x {} +
-	chmod +x "$TARGET"/theme/*.sh "$TARGET"/waybar/{player,spotify,themeswitch} "$TARGET"/wlogout/actions 2>/dev/null || true
+	chmod +x "$TARGET"/theme/*.sh "$TARGET"/theme/cursor/build.sh "$TARGET"/waybar/{player,spotify,themeswitch} "$TARGET"/wlogout/actions 2>/dev/null || true
 	have xdg-user-dirs-update && xdg-user-dirs-update || true
+}
+
+build_cursor() {
+	step "Cursor theme (Neobrutal)"
+	if "$TARGET/theme/cursor/build.sh"; then
+		ok "built from Simp1e with the palette"
+	else
+		warn "cursor build failed, falling back to Adwaita (retry : $TARGET/theme/cursor/build.sh)"
+	fi
 }
 
 init_theme() {
@@ -310,6 +319,7 @@ fi
 
 (( DO_SERVICES )) && enable_services
 link_config
+build_cursor
 init_theme
 (( DO_SDDM )) && install_sddm_theme
 check_tools

@@ -41,4 +41,5 @@ color7='#6E6A60'; color15='#8C877C'
 gtk_theme='White'
 gtk_icons='Luv-Folders'
 gtk_scheme='prefer-light'
-cursor_theme='Qogirr'
+cursor_theme='Neobrutal'
+cursor_size=24

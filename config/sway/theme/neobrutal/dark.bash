@@ -41,4 +41,5 @@ color7='#E6DDCB'; color15='#FFFFFF'
 gtk_theme='Manhattan'
 gtk_icons='Luv-Folders-Dark'
 gtk_scheme='prefer-dark'
-cursor_theme='Qogirr'
+cursor_theme='Neobrutal'
+cursor_size=24

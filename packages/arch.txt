@@ -67,6 +67,11 @@ noto-fonts-emoji
 papirus-icon-theme
 adw-gtk-theme
 
+# --- cursor theme build (theme/cursor/build.sh) ---
+python-pillow
+librsvg
+xorg-xcursorgen
+
 # --- install script itself ---
 git
 curl

@@ -64,6 +64,11 @@ fonts-noto-color-emoji
 papirus-icon-theme
 adw-gtk3
 
+# --- cursor theme build (theme/cursor/build.sh) ---
+python3-pil
+librsvg2-bin
+x11-apps
+
 # --- install script itself ---
 git
 curl
