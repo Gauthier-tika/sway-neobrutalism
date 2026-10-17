@@ -298,7 +298,7 @@ Rectangle {
                     color: t.ink
                     font.pixelSize: 13
                     font.weight: Font.ExtraBold
-                    text: Qt.locale().toString(now.date, "dddd d MMMM").toUpperCase()
+                    text: Qt.locale("en_US").toString(now.date, "dddd, MMMM d").toUpperCase()
                 }
             }
         }
@@ -320,7 +320,7 @@ Rectangle {
                 BText {
                     x: 20
                     height: parent.height
-                    text: root.failed ? "\u{f0026}  ACCÈS REFUSÉ" : "\u{f0342}  CONNEXION"
+                    text: root.failed ? "\u{f0026}  ACCESS DENIED" : "\u{f0342}  LOGIN"
                     color: t.ink
                     font.pixelSize: 16
                     font.weight: Font.ExtraBold
@@ -352,7 +352,7 @@ Rectangle {
                 spacing: 12
 
                 // users
-                SectionLabel { text: "UTILISATEUR" }
+                SectionLabel { text: "USER" }
 
                 Flow {
                     width: parent.width
@@ -447,7 +447,7 @@ Rectangle {
                         KeyNavigation.tab: password
                         BText {
                             visible: !parent.text
-                            text: "nom d'utilisateur"
+                            text: "username"
                             color: t.muted
                             height: parent.height
                         }
@@ -457,7 +457,7 @@ Rectangle {
                 Item { width: 1; height: 4 }
 
                 // password
-                SectionLabel { text: "MOT DE PASSE" }
+                SectionLabel { text: "PASSWORD" }
 
                 Item {
                     width: parent.width
@@ -538,7 +538,7 @@ Rectangle {
                                 visible: !parent.text
                                 x: 16
                                 height: parent.height
-                                text: root.failed ? "mauvais mot de passe, réessaie" : "••••••••"
+                                text: root.failed ? "wrong password, try again" : "••••••••"
                                 color: root.failed ? t.red : t.muted
                                 font.weight: Font.Bold
                             }
@@ -573,7 +573,7 @@ Rectangle {
                     BText {
                         id: capsText
                         anchors.centerIn: parent
-                        text: "󰪛  VERR. MAJ ACTIVÉ"
+                        text: "󰪛  CAPS LOCK ON"
                         color: t.ink
                         font.pixelSize: 12
                         font.weight: Font.ExtraBold
@@ -683,7 +683,7 @@ Rectangle {
                         id: loginBtn
                         anchors.right: parent.right
                         fill: t.green
-                        text: root.busy ? "…" : "ENTRER"
+                        text: root.busy ? "…" : "LOG IN"
                         icon: "󰁔"
                         padX: 20
                         onClicked: root.doLogin()
@@ -704,21 +704,21 @@ Rectangle {
             visible: sddm.canSuspend
             fill: t.blue
             icon: "󰤄"
-            text: "VEILLE"
+            text: "SUSPEND"
             onClicked: sddm.suspend()
         }
         Chip {
             visible: sddm.canReboot
             fill: t.orange
             icon: "󰜉"
-            text: "REDÉMARRER"
+            text: "REBOOT"
             onClicked: sddm.reboot()
         }
         Chip {
             visible: sddm.canPowerOff
             fill: t.red
             icon: "󰐥"
-            text: "ÉTEINDRE"
+            text: "SHUT DOWN"
             onClicked: sddm.powerOff()
         }
     }
@@ -729,7 +729,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.margins: 36
         height: 42
-        text: "TAB  naviguer   ·   ↵  entrer   ·   ↑↓  session"
+        text: "TAB  navigate   ·   ↵  log in   ·   ↑↓  session"
         color: t.muted
         font.pixelSize: 12
     }

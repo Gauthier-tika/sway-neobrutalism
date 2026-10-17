@@ -28,12 +28,12 @@ Card {
     }
     function deviceStatus(d) {
         switch (d.state) {
-        case BluetoothDeviceState.Connecting: return "Connexion…";
-        case BluetoothDeviceState.Disconnecting: return "Déconnexion…";
+        case BluetoothDeviceState.Connecting: return "Connecting…";
+        case BluetoothDeviceState.Disconnecting: return "Disconnecting…";
         }
-        if (d.pairing) return "Appairage…";
-        if (d.connected) return "Connecté" + (d.batteryAvailable ? `  ·  󰥉 ${Math.round(d.battery * 100)}%` : "");
-        if (d.paired) return "Appairé";
+        if (d.pairing) return "Pairing…";
+        if (d.connected) return "Connected" + (d.batteryAvailable ? `  ·  󰥉 ${Math.round(d.battery * 100)}%` : "");
+        if (d.paired) return "Paired";
         return d.address;
     }
 
@@ -43,7 +43,7 @@ Card {
         icon: "󰂯"
         title: "Bluetooth"
         tint: Theme.blue
-        subtitle: !panel.adapter ? "Aucun adaptateur" : panel.on ? (panel.adapter.name || "Activé") : "Désactivé"
+        subtitle: !panel.adapter ? "No adapter" : panel.on ? (panel.adapter.name || "On") : "Off"
 
         BSwitch {
             checked: panel.on
@@ -55,12 +55,12 @@ Card {
     // ---- known devices ----
     SectionLabel {
         visible: panel.on
-        text: "Mes appareils"
+        text: "My devices"
     }
 
     BText {
         visible: panel.on && panel.known.length === 0
-        text: "Aucun appareil appairé"
+        text: "No paired devices"
         color: Theme.muted
     }
 
@@ -90,14 +90,14 @@ Card {
     // ---- discovery ----
     SectionLabel {
         visible: panel.on
-        text: "À proximité"
+        text: "Nearby"
     }
 
     BButton {
         visible: panel.on
         width: parent.width
         icon: panel.adapter?.discovering ? "󰓛" : "󰍉"
-        text: panel.adapter?.discovering ? "Recherche en cours… (arrêter)" : "Rechercher des appareils"
+        text: panel.adapter?.discovering ? "Scanning… (stop)" : "Scan for devices"
         fill: Theme.cyan
         active: panel.adapter?.discovering ?? false
         activeFill: Theme.yellow
@@ -106,7 +106,7 @@ Card {
 
     BText {
         visible: panel.on && (panel.adapter?.discovering ?? false) && panel.nearby.length === 0
-        text: "Recherche…"
+        text: "Scanning…"
         color: Theme.muted
     }
 
@@ -137,7 +137,7 @@ Card {
 
                 BText {
                     height: 50
-                    text: "APPAIRER"
+                    text: "PAIR"
                     font.pixelSize: 10
                     font.weight: Font.Black
                 }

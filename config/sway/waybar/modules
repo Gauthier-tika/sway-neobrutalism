@@ -7,7 +7,7 @@
                 "󰃟",
                 "󰃠"
             ],
-            "tooltip-format": "Luminosité {percent}%",
+            "tooltip-format": "Brightness {percent}%",
             "on-click": "$HOME/.config/sway/scripts/panel brightness",
             "on-scroll-up": "$HOME/.config/sway/scripts/backlight inc 5",
             "on-scroll-down": "$HOME/.config/sway/scripts/backlight dec 5",
@@ -40,7 +40,7 @@
                 "󰂂",
                 "󰁹"
             ],
-            "tooltip-format": "Batterie {capacity}% · {timeTo}",
+            "tooltip-format": "Battery {capacity}% · {timeTo}",
             "tooltip": true
         },
 
@@ -52,7 +52,7 @@
             "format-disabled": "󰂲",
             "format-connected": "󰂱",
             "format-connected-battery": "󰂱",
-            "tooltip-format": "Bluetooth : {status}",
+            "tooltip-format": "Bluetooth: {status}",
             "tooltip-format-connected": "{device_enumerate}",
             "tooltip-format-enumerate-connected": "{device_alias}",
             "tooltip-format-enumerate-connected-battery": "{device_alias} · {device_battery_percentage}%",
@@ -63,8 +63,8 @@
     "clock": {
             "interval": 60,
             "format": "󰥔 {:%H:%M}",
-            "tooltip-format": "{:%A %d %B %Y}",
-            "locale": "fr_FR.UTF-8",
+            "tooltip-format": "{:%A, %B %d, %Y}",
+            "locale": "C",
             "on-click": "$HOME/.config/sway/scripts/panel calendar"
         },
 
@@ -138,7 +138,7 @@
             "format-disabled": "󰤭",
             "tooltip-format-wifi": "{essid} · {signalStrength}%",
             "tooltip-format-ethernet": "{ifname} · {ipaddr}/{cidr}",
-            "tooltip-format-disconnected": "Déconnecté",
+            "tooltip-format-disconnected": "Disconnected",
             "on-click": "$HOME/.config/sway/scripts/panel wifi"
         },
 

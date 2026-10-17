@@ -11,7 +11,7 @@ Card {
     readonly property var source: Pipewire.defaultAudioSource
 
     function label(n) {
-        return n ? (n.description || n.nickname || n.name) : "Aucun périphérique";
+        return n ? (n.description || n.nickname || n.name) : "No device";
     }
 
     // bind the default devices so their audio properties are live
@@ -21,13 +21,13 @@ Card {
 
     PanelHeader {
         icon: "󰕾"
-        title: "Son"
+        title: "Sound"
         tint: Theme.red
-        subtitle: panel.sink ? `Sortie ${Math.round((panel.sink.audio?.volume ?? 0) * 100)}%  ·  Entrée ${Math.round((panel.source?.audio?.volume ?? 0) * 100)}%` : ""
+        subtitle: panel.sink ? `Output ${Math.round((panel.sink.audio?.volume ?? 0) * 100)}%  ·  Input ${Math.round((panel.source?.audio?.volume ?? 0) * 100)}%` : ""
     }
 
     // ---------- output ----------
-    SectionLabel { text: "Sortie" }
+    SectionLabel { text: "Output" }
 
     Dropdown {
         model: panel.sinks
@@ -44,7 +44,7 @@ Card {
     }
 
     // ---------- input ----------
-    SectionLabel { text: "Entrée" }
+    SectionLabel { text: "Input" }
 
     Dropdown {
         model: panel.sources

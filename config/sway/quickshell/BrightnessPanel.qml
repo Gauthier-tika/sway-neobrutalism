@@ -28,9 +28,9 @@ Card {
 
     PanelHeader {
         icon: "󰃠"
-        title: "Luminosité"
+        title: "Brightness"
         tint: Theme.orange
-        subtitle: "Molette sur la barre : ±5%"
+        subtitle: "Scroll on the bar: ±5%"
 
         BText {
             text: panel.ready ? Math.round(panel.value * 100) + "%" : "…"
@@ -39,7 +39,7 @@ Card {
         }
     }
 
-    SectionLabel { text: "Rapide" }
+    SectionLabel { text: "Presets" }
 
     Row {
         id: presets
@@ -61,7 +61,7 @@ Card {
         }
     }
 
-    SectionLabel { text: "Précis · pas de 5%" }
+    SectionLabel { text: "Fine · 5% steps" }
 
     BSlider {
         width: parent.width

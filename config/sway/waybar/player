@@ -15,9 +15,9 @@ track="${track#' - '}"
 esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' <<< "$1"; }
 
 case "$status" in
-	Playing) text="$PLAY  $(esc "$track")"; tooltip="Lecture : $(esc "$track")"; class="playing" ;;
-	Paused)  text="$PAUSE  $(esc "$track")"; tooltip="En pause : $(esc "$track")"; class="paused" ;;
-	*)       text="$NOTE  Pas de musique"; tooltip="Aucun lecteur"; class="offline" ;;
+	Playing) text="$PLAY  $(esc "$track")"; tooltip="Playing: $(esc "$track")"; class="playing" ;;
+	Paused)  text="$PAUSE  $(esc "$track")"; tooltip="Paused: $(esc "$track")"; class="paused" ;;
+	*)       text="$NOTE  No music"; tooltip="No player"; class="offline" ;;
 esac
 
 jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \

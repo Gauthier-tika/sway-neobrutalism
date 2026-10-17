@@ -8,8 +8,8 @@ Card {
     readonly property string ctl: Quickshell.env("HOME") + "/.config/sway/theme/neobrutal.sh"
     readonly property var accents: Theme.c.accents ?? ["yellow", "red", "blue", "green", "purple", "orange", "cyan", "pink"]
     readonly property var labels: ({
-        yellow: "Jaune", red: "Rouge", blue: "Bleu", green: "Vert",
-        purple: "Violet", orange: "Orange", cyan: "Cyan", pink: "Rose"
+        yellow: "Yellow", red: "Red", blue: "Blue", green: "Green",
+        purple: "Purple", orange: "Orange", cyan: "Cyan", pink: "Pink"
     })
 
     // what was just clicked, until colors.json catches up (the switch takes ~1s)
@@ -60,9 +60,9 @@ Card {
 
     PanelHeader {
         icon: "󰏘"
-        title: "Thème"
+        title: "Theme"
         tint: Theme.main
-        subtitle: "Couleurs, curseur, zoom"
+        subtitle: "Colors, cursor, zoom"
     }
 
     SectionLabel { text: "Mode" }
@@ -75,20 +75,20 @@ Card {
         BButton {
             width: (modes.width - modes.spacing) / 2
             icon: "󰖨"
-            text: "Clair"
+            text: "Light"
             active: !panel.dark
             onClicked: panel.setMode("light")
         }
         BButton {
             width: (modes.width - modes.spacing) / 2
             icon: "󰖔"
-            text: "Sombre"
+            text: "Dark"
             active: panel.dark
             onClicked: panel.setMode("dark")
         }
     }
 
-    SectionLabel { text: "Couleur principale" }
+    SectionLabel { text: "Main color" }
 
     Grid {
         id: swatches
@@ -117,7 +117,7 @@ Card {
         }
     }
 
-    SectionLabel { text: "Taille du curseur" }
+    SectionLabel { text: "Cursor size" }
 
     Row {
         id: sizes
@@ -197,7 +197,7 @@ Card {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "~ : alacritty"
+                    text: "~: alacritty"
                     color: Theme.ink
                     font.pixelSize: 12
                     font.weight: Font.ExtraBold

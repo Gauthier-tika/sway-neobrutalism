@@ -11,10 +11,10 @@ MOON=$'\U000F0594'  # nf-md-weather_night
 
 if [[ "$MODE" == "light" ]]; then
 	text="$SUN"
-	tooltip="Thème clair — clic : panneau, clic droit : sombre"
+	tooltip="Light theme — click: theme panel, right click: dark"
 else
 	text="$MOON"
-	tooltip="Thème sombre — clic : panneau, clic droit : clair"
+	tooltip="Dark theme — click: theme panel, right click: light"
 fi
 
 jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$MODE" \

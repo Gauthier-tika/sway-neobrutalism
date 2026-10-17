@@ -1,19 +1,21 @@
 # Neo Brutalism · sway dotfiles
 
-Config sway complète au style **neo-brutalism** (bordures noires épaisses, ombres dures sans flou, couleurs plates saturées), avec un thème **clair** et **sombre** basculable en un clic.
+A complete sway setup in the **neo-brutalism** style (thick black borders, hard shadows with no blur, flat saturated colors), with a **light** and a **dark** theme, a choice of main color and a system-wide zoom.
 
-- **sway** : bordures 3 px, gaps, fond d'écran à grille généré
-- **waybar** : modules en « chips » à ombre portée, icônes seules, bouton ☀/☾
-- **Quickshell** : panneaux au clic sur la waybar
-  - Bluetooth (on/off, appareils, recherche, appairage)
-  - Son (sortie/entrée, volumes)
-  - Luminosité (25/50/75/100 %, réglage fin par 5 %)
-  - Wi-Fi (on/off, réseaux connus, recherche, mot de passe)
-  - Calendrier (lun→dim, n° de semaine, fête du jour)
+- **sway**: 3 px borders, gaps, generated grid wallpaper
+- **waybar**: modules as "chips" with drop shadows, icons only, ☀/☾ button
+- **Quickshell**: panels opened from the waybar
+  - Theme (light/dark, main color, cursor size, zoom)
+  - Bluetooth (on/off, devices, scan, pairing)
+  - Sound (output/input, volumes)
+  - Brightness (25/50/75/100 %, fine-tuning in 5 % steps)
+  - Wi-Fi (on/off, known networks, scan, password)
+  - Calendar (Mon→Sun, week numbers, French name day of the day)
+- **Cursor**: Simp1e recolored with the main color, hard offset shadow
 - **mako**, **wofi**, **rofi**, **wlogout**, **hyprlock** / swaylock
 - **alacritty**, **kitty**, **foot**
-- **GTK** (clair/sombre) et thème **Chromium**
-- **SDDM** : écran de connexion (choix utilisateur et session), suit le mode clair/sombre
+- **GTK** (light/dark) and a **Chromium** theme
+- **SDDM**: login screen (user and session picker), follows the theme
 
 ## Installation
 
@@ -23,51 +25,52 @@ cd ~/dotfiles
 ./install.sh
 ```
 
-Le script :
+The script:
 
-1. installe les paquets (`packages/arch.txt` + AUR, ou `packages/ubuntu.txt`) ;
-2. installe les polices (JetBrains Mono + Nerd Font) ;
-3. sur Ubuntu, **compile Quickshell** (Qt ≥ 6.6, donc Ubuntu 25.04+) ;
-4. active NetworkManager et bluetooth ;
-5. relie `~/.config/sway` vers `config/sway` du dépôt (lien symbolique ; l'ancienne config est sauvegardée en `~/.config/sway.backup-*`) ;
-6. génère les couleurs du thème ;
-7. si SDDM est présent, installe le thème de connexion `neobrutal` (`/usr/share/sddm/themes/neobrutal`, activé via `/etc/sddm.conf.d/zz-neobrutal.conf`).
+1. installs the packages (`packages/arch.txt` + AUR, or `packages/ubuntu.txt`);
+2. installs the fonts (JetBrains Mono + Nerd Font);
+3. on Ubuntu, **builds Quickshell** (Qt ≥ 6.6, so Ubuntu 25.04+);
+4. enables NetworkManager and bluetooth;
+5. links `~/.config/sway` to the repo's `config/sway` (symlink; the previous config is backed up as `~/.config/sway.backup-*`);
+6. builds the Neobrutal cursors;
+7. generates the theme colors;
+8. if SDDM is installed, installs the `neobrutal` login theme (`/usr/share/sddm/themes/neobrutal`, enabled through `/etc/sddm.conf.d/zz-neobrutal.conf`).
 
-Ensuite, déconnecte-toi et choisis la session **Sway**.
+Then log out and pick the **Sway** session.
 
 ### Options
 
-| Option | Effet |
+| Option | Effect |
 |---|---|
-| `-y`, `--yes` | aucune question |
-| `--mode light\|dark` | thème initial (défaut : `dark`) |
-| `--copy` | copie la config au lieu de la lier au dépôt |
-| `--config-only` | uniquement la config, sans paquets, polices ni services |
-| `--no-packages`, `--no-fonts`, `--no-quickshell`, `--no-services`, `--no-sddm` | sauter une étape |
+| `-y`, `--yes` | no questions |
+| `--mode light\|dark` | initial theme (default: `dark`) |
+| `--copy` | copy the config instead of linking it to the repo |
+| `--config-only` | config only, no packages, fonts or services |
+| `--no-packages`, `--no-fonts`, `--no-quickshell`, `--no-services`, `--no-sddm` | skip a step |
 
 ### Distributions
 
-| | Arch (et dérivées) | Ubuntu 25.04+ | Ubuntu 24.04 |
+| | Arch (and derivatives) | Ubuntu 25.04+ | Ubuntu 24.04 |
 |---|---|---|---|
 | sway, waybar, mako… | pacman | apt | apt |
-| wlogout | AUR (yay installé si besoin) | apt | apt |
-| Quickshell | pacman | compilé depuis les sources | ✗ (Qt trop ancien) |
+| wlogout | AUR (yay installed if needed) | apt | apt |
+| Quickshell | pacman | built from source | ✗ (Qt too old) |
 | hyprlock | pacman | apt | ✗ → swaylock |
-| Nerd Font | pacman | téléchargée | téléchargée |
+| Nerd Font | pacman | downloaded | downloaded |
 
-Sans Quickshell, les clics de la waybar ouvrent `blueman-manager`, `pavucontrol` et `nm-connection-editor`.
+Without Quickshell, waybar clicks open `blueman-manager`, `pavucontrol` and `nm-connection-editor`, and the ☀/☾ button toggles light/dark.
 
-## Utilisation
+## Usage
 
 | | |
 |---|---|
-| Thème (mode, couleur, curseur, zoom) | clic sur le bouton ☀/☾ de la waybar : panneau clair/sombre, nuancier, taille du curseur, zoom |
-| Basculer clair/sombre | clic droit sur ☀/☾ ou `$mod+Shift+t` |
-| Lanceur | `$mod+r` |
-| Menu d'extinction | `$mod+x` |
-| Panneaux | clic sur les icônes de la waybar (Échap ou clic à côté pour fermer) |
+| Theme (mode, color, cursor, zoom) | click the ☀/☾ waybar button: light/dark, color picker, cursor size, zoom |
+| Toggle light/dark | right click on ☀/☾ or `$mod+Shift+t` |
+| Launcher | `$mod+r` |
+| Power menu | `$mod+x` |
+| Panels | click the waybar icons (Esc or click outside to close) |
 
-Le thème en ligne de commande :
+The theme from the command line:
 
 ```sh
 ~/.config/sway/theme/neobrutal.sh light|dark|toggle|apply|status
@@ -76,61 +79,64 @@ Le thème en ligne de commande :
 ~/.config/sway/theme/neobrutal.sh zoom 80|90|100|110|120|default
 ```
 
-La couleur principale colore les bordures sway, la barre, les menus, le curseur et l'écran de connexion. `default` revient aux couleurs des palettes.
+The main color is used for the sway borders, the bar, the menus, the cursor and the login screen. `default` goes back to the palette colors.
 
-### Curseur
+The zoom is the sway output scale, applied to every screen. The `output … pos` lines of `config/sway/config` are meant for 100 %: they are divided by the zoom in the generated `sway-zoom`, so the screens stay side by side.
 
-`theme/cursor/build.sh` (lancé par `install.sh`) génère une variante de [Simp1e](https://gitlab.com/cursors/simp1e) par couleur (`Neobrutal-Yellow`, `Neobrutal-Red`…) : contour noir, ombre noire décalée. Changer de couleur ne fait que basculer de variante.
+### Cursor
 
-### Changer les couleurs
+`theme/cursor/build.sh` (run by `install.sh`) builds one variant of [Simp1e](https://gitlab.com/cursors/simp1e) per color (`Neobrutal-Yellow`, `Neobrutal-Red`…): black outline, offset black shadow. Changing the color just switches variants.
 
-Les palettes sont dans `config/sway/theme/neobrutal/{light,dark}.bash`. Après modification :
+### Changing the colors
+
+The palettes live in `config/sway/theme/neobrutal/{light,dark}.bash`. After editing them:
 
 ```sh
 ~/.config/sway/theme/neobrutal.sh apply
 ```
 
-Les fichiers de couleurs (`sway-colors`, `waybar/colors.css`, `mako/colors`, `quickshell/colors.json`…) sont **générés** et ignorés par git. Basculer de thème ne modifie donc pas le dépôt.
+The color files (`sway-colors`, `waybar/colors.css`, `mako/colors`, `quickshell/colors.json`…) are **generated** and ignored by git, so switching themes doesn't touch the repo.
 
-### Thème Chromium
+### Chromium theme
 
-`chrome://extensions` → Mode développeur → *Charger l'extension non empaquetée* → `~/.config/sway/chromium/neobrutal-theme`.
-Chromium relit le thème au redémarrage.
+`chrome://extensions` → Developer mode → *Load unpacked* → `~/.config/sway/chromium/neobrutal-theme`.
+Chromium reloads the theme on restart.
 
-### Écran de connexion (SDDM)
+### Login screen (SDDM)
 
 ```sh
-sddm/install.sh          # installe et active le thème (sudo)
-sddm/install.sh --test   # aperçu dans une fenêtre, sans root
+sddm/install.sh          # install and enable the theme (sudo)
+sddm/install.sh --test   # preview in a window, no root needed
 ```
 
-Les palettes sont reprises de `config/sway/theme/neobrutal/*.bash` à l'installation (relancer `sddm/install.sh` après les avoir modifiées). Le mode clair/sombre, la couleur principale et le curseur suivent le panneau Thème sans sudo. L'avatar affiché est `~/.face`, copié dans `/usr/share/sddm/faces/`.
+The palettes are taken from `config/sway/theme/neobrutal/*.bash` at install time (run `sddm/install.sh` again after editing them). The light/dark mode, the main color and the cursor follow the Theme panel without sudo. The avatar is `~/.face`, copied to `/usr/share/sddm/faces/`.
 
-## Spécifique à la machine
+## Machine-specific
 
-- `config/sway/config` : noms des écrans (`$main_monitor`, `$laptop_monitor`…) et affectation des workspaces. Pour connaître les noms : `swaymsg -t get_outputs`.
-- `config/sway/scripts/statusbar` : écrans externes qui déclenchent la config waybar multi-écrans.
+- `config/sway/config`: screen names (`$main_monitor`, `$laptop_monitor`…), their positions and the workspace assignments. To get the names: `swaymsg -t get_outputs`.
+- `config/sway/scripts/statusbar`: external screens that trigger the multi-screen waybar config.
 
-## Structure
+## Layout
 
 ```
-install.sh                  installeur Arch / Ubuntu
-packages/                   listes de paquets
+install.sh                  Arch / Ubuntu installer
+packages/                   package lists
 config/sway/
 ├── config, sway-*          sway
-├── theme/neobrutal.sh      générateur de thème (clair/sombre, couleur principale)
-├── theme/cursor/           curseurs Neobrutal (build depuis Simp1e)
+├── theme/neobrutal.sh      theme generator (light/dark, main color, cursor, zoom)
+├── theme/cursor/           Neobrutal cursors (built from Simp1e)
 ├── theme/neobrutal/        palettes
-├── waybar/                 barre + scripts des modules
-├── quickshell/             panneaux (QML) + data/fetes.json
+├── waybar/                 bar + module scripts
+├── quickshell/             panels (QML) + data/fetes.json
 ├── mako/ wofi/ rofi/ wlogout/
 ├── alacritty/ kitty/ foot/
-├── chromium/               thème Chromium (généré)
-└── scripts/                lanceurs, luminosité, son, capture…
+├── chromium/               Chromium theme (generated)
+└── scripts/                launchers, brightness, sound, screenshots…
 ```
 
-## Crédits
+## Credits
 
-Base de config et scripts : [Archcraft](https://github.com/archcraft-os) (Aditya Shakya, GPL-3.0).
-Fêtes du jour : [calendriergratuit.fr](https://www.calendriergratuit.fr/).
-Inspiration : [neubrutalism.com](https://neubrutalism.com/).
+Config base and scripts: [Archcraft](https://github.com/archcraft-os) (Aditya Shakya, GPL-3.0).
+Name days: [calendriergratuit.fr](https://www.calendriergratuit.fr/).
+Cursors: [Simp1e](https://gitlab.com/cursors/simp1e) (GPL-3.0).
+Inspiration: [neubrutalism.com](https://neubrutalism.com/).

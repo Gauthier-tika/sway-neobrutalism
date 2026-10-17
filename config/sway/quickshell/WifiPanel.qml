@@ -24,10 +24,10 @@ Card {
         return n.security !== WifiSecurityType.Open && n.security !== WifiSecurityType.Unknown;
     }
     function status(n) {
-        if (n.state === ConnectionState.Connecting) return "Connexion…";
-        if (n.state === ConnectionState.Disconnecting) return "Déconnexion…";
-        if (n.connected) return "Connecté";
-        return `${Math.round(n.signalStrength * 100)}%` + (secured(n) ? "  ·  󰌾 " + WifiSecurityType.toString(n.security) : "  ·  ouvert");
+        if (n.state === ConnectionState.Connecting) return "Connecting…";
+        if (n.state === ConnectionState.Disconnecting) return "Disconnecting…";
+        if (n.connected) return "Connected";
+        return `${Math.round(n.signalStrength * 100)}%` + (secured(n) ? "  ·  󰌾 " + WifiSecurityType.toString(n.security) : "  ·  open");
     }
     function activate(n) {
         panel.error = "";
@@ -45,8 +45,8 @@ Card {
         icon: "󰖩"
         title: "Wi-Fi"
         tint: Theme.green
-        subtitle: !panel.wifi ? "Aucune carte Wi-Fi" : !panel.on ? "Désactivé"
-            : panel.current ? panel.current.name : panel.wired ? "Filaire : " + panel.wired.name : "Non connecté"
+        subtitle: !panel.wifi ? "No Wi-Fi card" : !panel.on ? "Off"
+            : panel.current ? panel.current.name : panel.wired ? "Wired: " + panel.wired.name : "Not connected"
 
         BSwitch {
             checked: panel.on
@@ -64,7 +64,7 @@ Card {
 
     SectionLabel {
         visible: panel.on && panel.known.length > 0
-        text: "Réseaux connus"
+        text: "Known networks"
     }
 
     Column {
@@ -85,7 +85,7 @@ Card {
                 Connections {
                     target: modelData
                     function onConnectionFailed(reason) {
-                        panel.error = `${modelData.name} : ${ConnectionFailReason.toString(reason)}`;
+                        panel.error = `${modelData.name}: ${ConnectionFailReason.toString(reason)}`;
                     }
                 }
 
@@ -99,14 +99,14 @@ Card {
 
     SectionLabel {
         visible: panel.on
-        text: "Disponibles"
+        text: "Available"
     }
 
     BButton {
         visible: panel.on && panel.wifi !== null
         width: parent.width
         icon: panel.wifi?.scannerEnabled ? "󰓛" : "󰍉"
-        text: panel.wifi?.scannerEnabled ? "Recherche en cours… (arrêter)" : "Rechercher des réseaux"
+        text: panel.wifi?.scannerEnabled ? "Scanning… (stop)" : "Scan for networks"
         fill: Theme.cyan
         active: panel.wifi?.scannerEnabled ?? false
         activeFill: Theme.yellow
@@ -140,7 +140,7 @@ Card {
                     Connections {
                         target: netRow.modelData
                         function onConnectionFailed(reason) {
-                            panel.error = `${netRow.modelData.name} : ${ConnectionFailReason.toString(reason)}`;
+                            panel.error = `${netRow.modelData.name}: ${ConnectionFailReason.toString(reason)}`;
                         }
                     }
 
@@ -175,7 +175,7 @@ Card {
                                     BText {
                                         visible: psk.text === ""
                                         anchors.verticalCenter: parent.verticalCenter
-                                        text: "Mot de passe"
+                                        text: "Password"
                                         color: Theme.muted
                                     }
                                 }

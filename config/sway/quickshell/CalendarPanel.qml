@@ -7,10 +7,10 @@ Card {
 
     implicitWidth: 410
 
-    readonly property var monthNames: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
-    readonly property var dayNames: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
-    readonly property var monthShort: ["JANV", "FÉVR", "MARS", "AVR", "MAI", "JUIN", "JUIL", "AOÛT", "SEPT", "OCT", "NOV", "DÉC"]
-    readonly property var dayShort: ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"]
+    readonly property var monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    readonly property var dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    readonly property var monthShort: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    readonly property var dayShort: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
 
     property date today: new Date()
     property date selected: today
@@ -104,12 +104,12 @@ Card {
             }
             BText {
                 width: parent.width
-                text: `${panel.today.getDate()} ${panel.monthNames[panel.today.getMonth()]} ${panel.today.getFullYear()}`
+                text: `${panel.monthNames[panel.today.getMonth()]} ${panel.today.getDate()}, ${panel.today.getFullYear()}`
                 color: Theme.muted
             }
             Row {
                 spacing: 8
-                Tag { text: "SEM " + panel.isoWeek(panel.today); fill: Theme.blue }
+                Tag { text: "WEEK " + panel.isoWeek(panel.today); fill: Theme.blue }
                 Tag { text: "󰃭 " + panel.feteOf(panel.today); fill: Theme.pink; visible: panel.feteOf(panel.today) !== "" }
             }
         }
@@ -139,7 +139,7 @@ Card {
             id: todayBtn
             anchors.right: next.left
             anchors.rightMargin: 6
-            text: "AUJ."
+            text: "TODAY"
             fontSize: 11
             fill: Theme.main
             visible: panel.viewMonth !== panel.today.getMonth() || panel.viewYear !== panel.today.getFullYear() || !panel.sameDay(panel.selected, panel.today)
@@ -181,7 +181,7 @@ Card {
                     color: Theme.border
                     BText {
                         anchors.centerIn: parent
-                        text: "SEM"
+                        text: "WK"
                         color: Theme.dark ? Theme.fg : Theme.surface
                         font.pixelSize: 10
                         font.weight: Font.Black
@@ -307,7 +307,7 @@ Card {
             anchors.leftMargin: 12
             anchors.rightMargin: 12
             readonly property string f: panel.feteOf(panel.selected)
-            text: `${panel.cap(panel.dayNames[panel.selected.getDay()])} ${panel.selected.getDate()} ${panel.monthNames[panel.selected.getMonth()]}`
+            text: `${panel.dayNames[panel.selected.getDay()]}, ${panel.monthNames[panel.selected.getMonth()]} ${panel.selected.getDate()}`
                 + (f ? `  ·  󰃭 ${f}` : "")
             color: Theme.onFill(parent.color)
         }

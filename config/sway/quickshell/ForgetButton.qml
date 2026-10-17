@@ -9,7 +9,7 @@ BButton {
 
     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
     icon: armed ? "" : "󰆴"
-    text: armed ? "OUBLIER ?" : ""
+    text: armed ? "FORGET?" : ""
     padX: 6
     implicitHeight: 28
     fontSize: 10
