@@ -61,7 +61,8 @@ Sans Quickshell, les clics de la waybar ouvrent `blueman-manager`, `pavucontrol`
 
 | | |
 |---|---|
-| Basculer clair/sombre | bouton ☀/☾ de la waybar ou `$mod+Shift+t` |
+| Thème (mode + couleur principale) | clic sur le bouton ☀/☾ de la waybar : panneau clair/sombre et nuancier |
+| Basculer clair/sombre | clic droit sur ☀/☾ ou `$mod+Shift+t` |
 | Lanceur | `$mod+r` |
 | Menu d'extinction | `$mod+x` |
 | Panneaux | clic sur les icônes de la waybar (Échap ou clic à côté pour fermer) |
@@ -70,7 +71,14 @@ Le thème en ligne de commande :
 
 ```sh
 ~/.config/sway/theme/neobrutal.sh light|dark|toggle|apply|status
+~/.config/sway/theme/neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
 ```
+
+La couleur principale colore les bordures sway, la barre, les menus, le curseur et l'écran de connexion. `default` revient aux couleurs des palettes.
+
+### Curseur
+
+`theme/cursor/build.sh` (lancé par `install.sh`) génère une variante de [Simp1e](https://gitlab.com/cursors/simp1e) par couleur (`Neobrutal-Yellow`, `Neobrutal-Red`…) : contour noir, ombre noire décalée. Changer de couleur ne fait que basculer de variante.
 
 ### Changer les couleurs
 
@@ -94,7 +102,7 @@ sddm/install.sh          # installe et active le thème (sudo)
 sddm/install.sh --test   # aperçu dans une fenêtre, sans root
 ```
 
-Les palettes sont reprises de `config/sway/theme/neobrutal/*.bash` à l'installation (relancer `sddm/install.sh` après les avoir modifiées). Le mode clair/sombre, lui, suit le bouton ☀/☾ sans sudo. L'avatar affiché est `~/.face`, copié dans `/usr/share/sddm/faces/`.
+Les palettes sont reprises de `config/sway/theme/neobrutal/*.bash` à l'installation (relancer `sddm/install.sh` après les avoir modifiées). Le mode clair/sombre, la couleur principale et le curseur suivent le panneau Thème sans sudo. L'avatar affiché est `~/.face`, copié dans `/usr/share/sddm/faces/`.
 
 ## Spécifique à la machine
 
@@ -108,7 +116,8 @@ install.sh                  installeur Arch / Ubuntu
 packages/                   listes de paquets
 config/sway/
 ├── config, sway-*          sway
-├── theme/neobrutal.sh      générateur de thème (clair/sombre)
+├── theme/neobrutal.sh      générateur de thème (clair/sombre, couleur principale)
+├── theme/cursor/           curseurs Neobrutal (build depuis Simp1e)
 ├── theme/neobrutal/        palettes
 ├── waybar/                 barre + scripts des modules
 ├── quickshell/             panneaux (QML) + data/fetes.json

@@ -1,18 +1,19 @@
-# Neo Brutalism cursor colors (Simp1e color scheme format, see theme/cursor/build.sh)
+# Neo Brutalism cursor colors (Simp1e color scheme format).
+# build.sh makes one theme per accent : @NAME@ and @ACCENT@ are filled in from the palette.
 
-name:Neobrutal
+name:Neobrutal-@NAME@
 shadow:000000
 shadow_opacity:1
 cursor_border:000000
-default_cursor_bg:FFDC58
-hand_bg:FFDC58
+default_cursor_bg:@ACCENT@
+hand_bg:@ACCENT@
 question_mark_bg:88AAEE
 question_mark_fg:000000
 plus_bg:A3E636
 plus_fg:000000
 link_bg:88AAEE
 link_fg:000000
-move_bg:FFDC58
+move_bg:@ACCENT@
 move_fg:000000
 context_menu_bg:FFF4E0
 context_menu_fg:000000

@@ -24,6 +24,8 @@ pink='#FF90E8'
 
 main="$yellow"
 accent="$yellow"
+# default accent name (cursor color, theme panel) ; theme/.neobrutal_accent overrides main + accent
+accent_name='yellow'
 
 # Terminal
 term_bg='#232428'
@@ -41,5 +43,5 @@ color7='#E6DDCB'; color15='#FFFFFF'
 gtk_theme='Manhattan'
 gtk_icons='Luv-Folders-Dark'
 gtk_scheme='prefer-dark'
-cursor_theme='Neobrutal'
+# cursor_theme is Neobrutal-<Accent>, set by theme/neobrutal.sh
 cursor_size=24

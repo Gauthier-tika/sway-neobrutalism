@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Waybar module : neo brutalism light/dark toggle switch
+## Waybar module : neo brutalism theme (click : theme panel, right click : light/dark)
 
 DIR="$HOME/.config/sway"
 MODE="$("$DIR"/theme/neobrutal.sh status)"
@@ -11,10 +11,10 @@ MOON=$'\U000F0594'  # nf-md-weather_night
 
 if [[ "$MODE" == "light" ]]; then
 	text="$SUN"
-	tooltip="Neo Brutalism : clair — clic pour sombre"
+	tooltip="Thème clair — clic : panneau, clic droit : sombre"
 else
 	text="$MOON"
-	tooltip="Neo Brutalism : sombre — clic pour clair"
+	tooltip="Thème sombre — clic : panneau, clic droit : clair"
 fi
 
 jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$MODE" \

@@ -16,9 +16,8 @@ PALETTES="$REPO/config/sway/theme/neobrutal"
 DEST="/usr/share/sddm/themes/neobrutal"
 CONF="/etc/sddm.conf.d/zz-neobrutal.conf"
 MODE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/sway/theme/.neobrutal_mode"
-CURSOR="Neobrutal"
-CURSOR_SRC="${XDG_DATA_HOME:-$HOME/.local/share}/icons/$CURSOR"
-CURSOR_DEST="/usr/share/icons/$CURSOR"
+ICONS="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
+THEME_SH="${XDG_CONFIG_HOME:-$HOME/.config}/sway/theme/neobrutal.sh"
 KEYS=(bg grid surface fg ink border shadow muted main accent yellow red blue green purple orange cyan pink)
 
 mode="$(cat "$MODE_FILE" 2>/dev/null || true)"
@@ -66,15 +65,23 @@ sudo install -m 644 "$tmp/neobrutal/"{Main.qml,metadata.desktop,theme.conf} "$DE
 # only the mode file is yours, so the light/dark switch works without sudo
 sudo install -m 644 -o "$USER" "$tmp/neobrutal/theme.conf.user" "$DEST/"
 
-# cursor : the greeter can't read ~/.local/share/icons, copy the theme system-wide
+# cursor : the greeter can't read ~/.local/share/icons, copy the variants system-wide.
+# "Neobrutal" is a pointer (index.theme only) owned by you : theme/neobrutal.sh
+# points it at the current accent, like theme.conf.user for the mode.
 cursor_conf=""
-if [[ -d "$CURSOR_SRC/cursors" ]]; then
-	sudo rm -rf "$CURSOR_DEST"
-	sudo cp -a "$CURSOR_SRC" "$CURSOR_DEST"
-	sudo chown -R root:root "$CURSOR_DEST"
-	cursor_conf="CursorTheme=$CURSOR"$'\n'"CursorSize=24"$'\n'
+variants=("$ICONS"/Neobrutal-*/)
+if [[ -d "${variants[0]}cursors" ]]; then
+	sudo rm -rf /usr/share/icons/Neobrutal /usr/share/icons/Neobrutal-*
+	for v in "${variants[@]}"; do
+		sudo cp -a "${v%/}" /usr/share/icons/
+	done
+	sudo chown -R root:root /usr/share/icons/Neobrutal-*
+	sudo install -d /usr/share/icons/Neobrutal
+	printf '[Icon Theme]\nName=Neobrutal\nInherits=Neobrutal-Yellow\n' > "$tmp/index.theme"
+	sudo install -m 644 -o "$USER" "$tmp/index.theme" /usr/share/icons/Neobrutal/
+	cursor_conf="CursorTheme=Neobrutal"$'\n'"CursorSize=24"$'\n'
 else
-	echo "! $CURSOR cursor not built, keeping the SDDM default (build : config/sway/theme/cursor/build.sh)" >&2
+	echo "! Neobrutal cursors not built, keeping the SDDM default (build : config/sway/theme/cursor/build.sh)" >&2
 fi
 
 sudo install -d /etc/sddm.conf.d
@@ -87,5 +94,8 @@ for f in "$HOME/.face.icon" "$HOME/.face"; do
 		break
 	fi
 done
+
+# accent + cursor pointer : let the theme script fill in the user-owned files
+[[ -x "$THEME_SH" ]] && "$THEME_SH" apply >/dev/null 2>&1 || true
 
 echo "✓ SDDM theme installed ($DEST, $mode) and enabled in $CONF"

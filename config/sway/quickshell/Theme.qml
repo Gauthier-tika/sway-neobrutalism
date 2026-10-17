@@ -45,6 +45,7 @@ Singleton {
         watchChanges: true
         onFileChanged: reload()
         onLoaded: {
+            if (text().trim() === "") return;   // caught mid-write, the next change brings the full file
             try { theme.c = JSON.parse(text()); } catch (e) { console.warn("colors.json:", e); }
         }
     }

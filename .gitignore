@@ -12,6 +12,7 @@ config/sway/foot/colors.ini
 config/sway/quickshell/colors.json
 config/sway/chromium/neobrutal-theme/
 config/sway/theme/.neobrutal_mode
+config/sway/theme/.neobrutal_accent
 config/sway/theme/.mode_state
 config/sway/wallpapers/*
 !config/sway/wallpapers/.gitkeep

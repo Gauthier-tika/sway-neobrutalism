@@ -3,16 +3,32 @@
 ## Neo Brutalism theme switcher for sway / waybar / mako / wofi / rofi / terminals
 ##
 ## Usage: neobrutal.sh light | dark | toggle | apply | status
+##        neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
 
 DIR="$HOME/.config/sway"
 THEME_DIR="$DIR/theme/neobrutal"
 STATE_FILE="$DIR/theme/.neobrutal_mode"
+ACCENT_FILE="$DIR/theme/.neobrutal_accent"
+ACCENTS=(yellow red blue green purple orange cyan pink)
 WALL_DIR="$DIR/wallpapers"
 
 current_mode() {
 	local mode
 	mode="$(cat "$STATE_FILE" 2>/dev/null)"
 	[[ "$mode" == "light" || "$mode" == "dark" ]] && echo "$mode" || echo "light"
+}
+
+## Accent picked in the theme panel : one color for both main and accent
+## (sway borders, waybar, menus, cursor…). No file = the palette defaults.
+apply_accent_choice() {
+	local name
+	name="$(cat "$ACCENT_FILE" 2>/dev/null)"
+	if [[ " ${ACCENTS[*]} " == *" $name "* ]]; then
+		main="${!name}"
+		accent="${!name}"
+		accent_name="$name"
+	fi
+	cursor_theme="Neobrutal-${accent_name^}"
 }
 
 ## Wallpaper : flat bg + dot grid tile (same as the SDDM theme) ----------
@@ -72,7 +88,22 @@ apply_sway() {
 	gsettings set org.gnome.desktop.interface icon-theme "$gtk_icons"
 	gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
 	gsettings set org.gnome.desktop.interface cursor-size "$cursor_size"
+	apply_cursor_pointers
 	gsettings set org.gnome.desktop.interface color-scheme "$gtk_scheme"
+}
+
+## Cursor : "Neobrutal" is a pointer theme (index.theme only) inheriting the
+## current variant, for apps that don't follow sway (X11 apps via ~/.icons/default)
+## and the SDDM greeter (/usr/share/icons/Neobrutal, owned by you, see sddm/install.sh)
+apply_cursor_pointers() {
+	[[ "$cursor_theme" == Neobrutal-* ]] || return 0
+	local d content
+	content="$(printf '[Icon Theme]\nName=Neobrutal\nComment=Points to the current accent, written by theme/neobrutal.sh\nInherits=%s\n' "$cursor_theme")"
+	d="${XDG_DATA_HOME:-$HOME/.local/share}/icons/Neobrutal"
+	mkdir -p "$d" && printf '%s\n' "$content" > "$d/index.theme"
+	d="/usr/share/icons/Neobrutal"
+	[[ -w "$d/index.theme" ]] && printf '%s\n' "$content" > "$d/index.theme"
+	return 0
 }
 
 ## GTK-CSS palette (waybar, wlogout) --------
@@ -102,6 +133,7 @@ gtk_palette() {
 apply_waybar() {
 	gtk_palette > "$DIR/waybar/colors.css"
 	pkill -SIGUSR2 -x waybar 2>/dev/null
+	pkill -RTMIN+8 -x waybar 2>/dev/null   # custom/theme icon
 }
 
 apply_wlogout() {
@@ -348,7 +380,8 @@ apply_chromium() {
 apply_quickshell() {
 	cat > "$DIR/quickshell/colors.json" <<- _EOF_
 		{
-		  "mode": "$MODE",
+		  "mode": "$MODE", "accent_name": "$accent_name",
+		  "accents": [$(printf '"%s",' "${ACCENTS[@]}" | sed 's/,$//')],
 		  "bg": "$bg", "surface": "$surface", "fg": "$fg", "ink": "$ink",
 		  "border": "$border", "shadow": "$shadow", "muted": "$muted",
 		  "main": "$main", "accent": "$accent",
@@ -377,13 +410,13 @@ gtk_fallbacks() {
 			gtk_icons="Adwaita"
 		fi
 	fi
-	icons_exist "$cursor_theme" || cursor_theme="Adwaita"
+	icons_exist "$cursor_theme" || cursor_theme="Adwaita"   # theme/cursor/build.sh not run
 }
 
 ## SDDM (login screen) : only the mode, the palettes are baked in by sddm/install.sh
 apply_sddm() {
 	local f="/usr/share/sddm/themes/neobrutal/theme.conf.user"
-	[[ -w "$f" ]] && printf '[General]\nmode=%s\n' "$MODE" > "$f"
+	[[ -w "$f" ]] && printf '[General]\nmode=%s\nmain=%s\naccent=%s\n' "$MODE" "$main" "$accent" > "$f"
 	return 0
 }
 
@@ -391,6 +424,7 @@ apply_all() {
 	MODE="$1"
 	# shellcheck source=/dev/null
 	source "$THEME_DIR/$MODE.bash"
+	apply_accent_choice
 	gtk_fallbacks
 	echo "$MODE" > "$STATE_FILE"
 
@@ -415,5 +449,15 @@ case "$1" in
 	toggle)     [[ "$(current_mode)" == "light" ]] && apply_all dark || apply_all light ;;
 	apply)      apply_all "$(current_mode)" ;;
 	status)     current_mode ;;
-	*)          echo "Usage: ${0##*/} light | dark | toggle | apply | status"; exit 1 ;;
+	accent)
+		if [[ "$2" == default ]]; then
+			rm -f "$ACCENT_FILE"
+		elif [[ " ${ACCENTS[*]} " == *" $2 "* ]]; then
+			echo "$2" > "$ACCENT_FILE"
+		else
+			echo "Usage: ${0##*/} accent $(IFS="|"; echo "${ACCENTS[*]}")|default"; exit 1
+		fi
+		apply_all "$(current_mode)"
+		;;
+	*)          echo "Usage: ${0##*/} light | dark | toggle | apply | status | accent <color>"; exit 1 ;;
 esac

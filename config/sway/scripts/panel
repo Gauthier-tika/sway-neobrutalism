@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Toggle a Quickshell panel : panel bluetooth|audio|brightness|wifi|calendar
+## Toggle a Quickshell panel : panel bluetooth|audio|brightness|wifi|calendar|theme
 ## Falls back to classic tools when quickshell isn't installed.
 
 QS_DIR="$HOME/.config/sway/quickshell"
@@ -11,6 +11,7 @@ fallback() {
 		audio)      exec pavucontrol ;;
 		wifi)       exec nm-connection-editor ;;
 		brightness) exec "$HOME/.config/sway/scripts/brightness" --get ;;
+		theme)      exec "$HOME/.config/sway/theme/neobrutal.sh" toggle ;;
 		calendar)   notify-send "$(date '+%A %d %B %Y')" "$(cal -m | sed 's/_\x08//g')" ;;
 	esac
 }

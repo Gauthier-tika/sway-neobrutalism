@@ -78,7 +78,7 @@
          "timeout": 30
     },
 
-	// neo brutalism light/dark switch
+	// neo brutalism theme : click opens the quickshell theme panel (mode + main color)
     "custom/theme": {
         "exec": "$HOME/.config/sway/waybar/themeswitch",
         "return-type": "json",
@@ -87,7 +87,8 @@
         "format": "{}",
         "tooltip": true,
         "escape": false,
-        "on-click": "$HOME/.config/sway/theme/neobrutal.sh toggle && pkill -RTMIN+8 -x waybar",
+        "on-click": "$HOME/.config/sway/scripts/panel theme",
+        "on-click-right": "$HOME/.config/sway/theme/neobrutal.sh toggle",
     },
 
 	// waybar-spotify

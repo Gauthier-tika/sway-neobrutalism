@@ -1,5 +1,5 @@
 // Neo Brutalism panels for waybar (sway)
-//   qs -p ~/.config/sway/quickshell ipc call panel toggle <bluetooth|audio|brightness|wifi|calendar>
+//   qs -p ~/.config/sway/quickshell ipc call panel toggle <bluetooth|audio|brightness|wifi|calendar|theme>
 
 import Quickshell
 import Quickshell.Io
@@ -17,7 +17,8 @@ ShellRoot {
         audio: audioPanel,
         brightness: brightnessPanel,
         wifi: wifiPanel,
-        calendar: calendarPanel
+        calendar: calendarPanel,
+        theme: themePanel
     })
 
     IpcHandler {
@@ -39,6 +40,7 @@ ShellRoot {
     Component { id: brightnessPanel; BrightnessPanel {} }
     Component { id: wifiPanel; WifiPanel {} }
     Component { id: calendarPanel; CalendarPanel {} }
+    Component { id: themePanel; ThemePanel {} }
 
     PanelWindow {
         id: win
