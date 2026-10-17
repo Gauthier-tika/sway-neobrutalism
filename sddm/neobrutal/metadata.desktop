@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=Neo Brutalism
+Description=Neo Brutalism login screen, matching the sway dotfiles (light / dark)
+Version=1.0
+Theme-Id=neobrutal
+Theme-API=2.0
+QtVersion=6
+Author=XenoX
+License=GPL-3.0-or-later
+Type=sddm-theme
+MainScript=Main.qml
+ConfigFile=theme.conf

@@ -369,6 +369,13 @@ gtk_fallbacks() {
 	icons_exist "$cursor_theme" || cursor_theme="Adwaita"
 }
 
+## SDDM (login screen) : only the mode, the palettes are baked in by sddm/install.sh
+apply_sddm() {
+	local f="/usr/share/sddm/themes/neobrutal/theme.conf.user"
+	[[ -w "$f" ]] && printf '[General]\nmode=%s\n' "$MODE" > "$f"
+	return 0
+}
+
 apply_all() {
 	MODE="$1"
 	# shellcheck source=/dev/null
@@ -388,6 +395,7 @@ apply_all() {
 	apply_hyprlock
 	apply_chromium
 	apply_quickshell
+	apply_sddm
 	apply_waybar
 }
 

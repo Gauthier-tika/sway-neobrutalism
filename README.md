@@ -13,6 +13,7 @@ Config sway complète au style **neo-brutalism** (bordures noires épaisses, omb
 - **mako**, **wofi**, **rofi**, **wlogout**, **hyprlock** / swaylock
 - **alacritty**, **kitty**, **foot**
 - **GTK** (clair/sombre) et thème **Chromium**
+- **SDDM** : écran de connexion (choix utilisateur et session), suit le mode clair/sombre
 
 ## Installation
 
@@ -29,7 +30,8 @@ Le script :
 3. sur Ubuntu, **compile Quickshell** (Qt ≥ 6.6, donc Ubuntu 25.04+) ;
 4. active NetworkManager et bluetooth ;
 5. relie `~/.config/sway` vers `config/sway` du dépôt (lien symbolique ; l'ancienne config est sauvegardée en `~/.config/sway.backup-*`) ;
-6. génère les couleurs du thème.
+6. génère les couleurs du thème ;
+7. si SDDM est présent, installe le thème de connexion `neobrutal` (`/usr/share/sddm/themes/neobrutal`, activé via `/etc/sddm.conf.d/zz-neobrutal.conf`).
 
 Ensuite, déconnecte-toi et choisis la session **Sway**.
 
@@ -41,7 +43,7 @@ Ensuite, déconnecte-toi et choisis la session **Sway**.
 | `--mode light\|dark` | thème initial (défaut : `dark`) |
 | `--copy` | copie la config au lieu de la lier au dépôt |
 | `--config-only` | uniquement la config, sans paquets, polices ni services |
-| `--no-packages`, `--no-fonts`, `--no-quickshell`, `--no-services` | sauter une étape |
+| `--no-packages`, `--no-fonts`, `--no-quickshell`, `--no-services`, `--no-sddm` | sauter une étape |
 
 ### Distributions
 
@@ -84,6 +86,15 @@ Les fichiers de couleurs (`sway-colors`, `waybar/colors.css`, `mako/colors`, `qu
 
 `chrome://extensions` → Mode développeur → *Charger l'extension non empaquetée* → `~/.config/sway/chromium/neobrutal-theme`.
 Chromium relit le thème au redémarrage.
+
+### Écran de connexion (SDDM)
+
+```sh
+sddm/install.sh          # installe et active le thème (sudo)
+sddm/install.sh --test   # aperçu dans une fenêtre, sans root
+```
+
+Les palettes sont reprises de `config/sway/theme/neobrutal/*.bash` à l'installation (relancer `sddm/install.sh` après les avoir modifiées). Le mode clair/sombre, lui, suit le bouton ☀/☾ sans sudo. L'avatar affiché est `~/.face`, copié dans `/usr/share/sddm/faces/`.
 
 ## Spécifique à la machine
 

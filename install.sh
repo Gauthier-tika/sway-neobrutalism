@@ -20,6 +20,7 @@ DO_PACKAGES=1
 DO_FONTS=1
 DO_QUICKSHELL=1
 DO_SERVICES=1
+DO_SDDM=1
 LINK_MODE="link"
 THEME_MODE="dark"
 
@@ -59,7 +60,8 @@ usage() {
 		      --no-fonts       skip fonts (Nerd Font download on Ubuntu)
 		      --no-quickshell  skip building Quickshell on Ubuntu
 		      --no-services    don't enable NetworkManager / bluetooth
-		      --config-only    same as --no-packages --no-fonts --no-quickshell --no-services
+		      --no-sddm        don't install the SDDM login theme
+		      --config-only    same as --no-packages --no-fonts --no-quickshell --no-services --no-sddm
 		  -h, --help           this help
 	EOF
 }
@@ -73,7 +75,8 @@ while [[ $# -gt 0 ]]; do
 		--no-fonts)      DO_FONTS=0 ;;
 		--no-quickshell) DO_QUICKSHELL=0 ;;
 		--no-services)   DO_SERVICES=0 ;;
-		--config-only)   DO_PACKAGES=0; DO_FONTS=0; DO_QUICKSHELL=0; DO_SERVICES=0 ;;
+		--no-sddm)       DO_SDDM=0 ;;
+		--config-only)   DO_PACKAGES=0; DO_FONTS=0; DO_QUICKSHELL=0; DO_SERVICES=0; DO_SDDM=0 ;;
 		-h|--help)       usage; exit 0 ;;
 		*)               usage; die "unknown option : $1" ;;
 	esac
@@ -252,6 +255,19 @@ init_theme() {
 	ok "colors generated for sway, waybar, mako, wofi, rofi, terminals, quickshell, chromium"
 }
 
+install_sddm_theme() {
+	step "Login screen (SDDM)"
+	if ! have sddm; then
+		info "sddm not installed, skipped (theme : sddm/install.sh)"
+		return
+	fi
+	if "$REPO/sddm/install.sh"; then
+		ok "neobrutal theme set as the SDDM theme"
+	else
+		warn "SDDM theme install failed (retry : sddm/install.sh)"
+	fi
+}
+
 check_tools() {
 	step "Check"
 	local t missing=()
@@ -274,7 +290,7 @@ info "distro  : $DISTRO_NAME ($DISTRO)"
 info "repo    : $REPO"
 info "target  : $TARGET ($LINK_MODE)"
 info "theme   : $THEME_MODE"
-info "steps   : packages=$DO_PACKAGES fonts=$DO_FONTS quickshell=$DO_QUICKSHELL services=$DO_SERVICES"
+info "steps   : packages=$DO_PACKAGES fonts=$DO_FONTS quickshell=$DO_QUICKSHELL services=$DO_SERVICES sddm=$DO_SDDM"
 confirm "Continue ?" || exit 0
 
 if (( DO_PACKAGES )); then
@@ -295,6 +311,7 @@ fi
 (( DO_SERVICES )) && enable_services
 link_config
 init_theme
+(( DO_SDDM )) && install_sddm_theme
 check_tools
 
 step "Done"
