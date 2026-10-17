@@ -6,10 +6,34 @@
 
 DIR="$HOME/.config/sway"
 
-#bash "$DIR"/scripts/lockscreen
+# hyprlock stretches its background image : give it the dot grid wallpaper
+# rendered at each output's exact size (cached per output / size / mode)
+hyprlock_backgrounds() {
+	local cache="$HOME/.cache/neobrutal-lock" colors="$DIR/quickshell/colors.json"
+	local mode bg wall im name w h img
+	mode="$(jq -r '.mode // "dark"' "$colors" 2>/dev/null)"
+	bg="$(jq -r '.bg // "#2A2B30"' "$colors" 2>/dev/null)"
+	wall="$DIR/wallpapers/neobrutal-$mode.png"
+	im="magick"; command -v magick >/dev/null 2>&1 || im="convert"
+	mkdir -p "$cache"
+
+	{
+		# flat color first : outputs plugged in later, or a missing wallpaper
+		printf 'background {\n    monitor =\n    zindex = -2\n    color = rgba(%d, %d, %d, 1.0)\n}\n' "0x${bg:1:2}" "0x${bg:3:2}" "0x${bg:5:2}"
+		[[ -f "$wall" ]] || return 0
+		while read -r name w h; do
+			[[ -n "$name" ]] || continue
+			img="$cache/grid-$name-${w}x$h-$mode.png"
+			[[ -f "$img" ]] || "$im" -size "${w}x$h" "tile:$wall" "$img"
+			printf 'background {\n    monitor = %s\n    zindex = -1\n    path = %s\n    blur_passes = 0\n}\n' "$name" "$img"
+		done < <(swaymsg -t get_outputs 2>/dev/null | jq -r '.[] | select(.active) | "\(.name) \(.current_mode.width) \(.current_mode.height)"')
+	} > "$cache/hyprlock-bg.conf"
+}
+
+# hyprlock when installed, else the neo brutalism swaylock (scripts/lockscreen)
 if command -v hyprlock >/dev/null 2>&1; then
+	hyprlock_backgrounds
 	hyprlock --config "$DIR"/hyprlock.conf &
 else
-	source "$DIR/theme/neobrutal/$("$DIR"/theme/neobrutal.sh status).bash"
-	swaylock -f -c "${bg#\#}" &
+	"$DIR"/scripts/lockscreen
 fi

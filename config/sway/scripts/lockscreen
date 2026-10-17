@@ -1,15 +1,97 @@
 #!/usr/bin/env bash
 
-# Source Theme file
-DIR="$HOME/.config/sway"
+## Neo Brutalism swaylock (used by scripts/current_lock when hyprlock isn't installed)
+##
+## swaylock can only draw its ring, so the rest is a background rendered at lock
+## time, one per output : the dot grid wallpaper + a card (black border, hard
+## shadow, LOCKED title bar) with the ring sitting in it.
+## Colors come from quickshell/colors.json (theme/neobrutal.sh), so the main
+## color picked in the theme panel applies here too.
 
-# CMD
-swaylock --config "$DIR"/swaylock/catppuccin-macchiato.conf \
-  --ignore-empty-password \
-  --show-failed-attempts \
-  --hide-keyboard-layout \
-  --indicator-caps-lock \
-  --image "$DIR"/wallpapers/wallpaper_6.jpg \
-  --font 'JetBrainsMono Nerd Font' --font-size 18 \
-  --indicator-radius 120 \
-  --indicator-thickness 10 #--image "$DIR"/wallpapers/ram_3.jpg \
+DIR="$HOME/.config/sway"
+COLORS="$DIR/quickshell/colors.json"
+CACHE="${XDG_RUNTIME_DIR:-/tmp}/neobrutal-lock"
+mkdir -p "$CACHE"
+
+# ---- palette -------------------------------------------------------------
+c() { jq -r --arg k "$1" --arg d "$2" '.[$k] // $d' "$COLORS" 2>/dev/null || echo "$2"; }
+mode="$(c mode dark)"
+bg="$(c bg '#2A2B30')"; surface="$(c surface '#3B3D44')"; fg="$(c fg '#FFF4E0')"
+ink="$(c ink '#000000')"; border="$(c border '#000000')"; shadow="$(c shadow '#000000')"
+muted="$(c muted '#A09A8E')"; main="$(c main '#FFDC58')"
+red="$(c red '#FF6B6B')"; yellow="$(c yellow '#FFDC58')"; green="$(c green '#A3E636')"
+blue="$(c blue '#88AAEE')"; orange="$(c orange '#FF9F45')"
+
+im="magick"; command -v magick >/dev/null 2>&1 || im="convert"
+font="$(fc-match -f '%{file}' 'JetBrainsMono Nerd Font:bold' 2>/dev/null)"
+wall="$DIR/wallpapers/neobrutal-$mode.png"
+since="$(LC_ALL=C date '+%H:%M')"
+
+# ring geometry (logical px, swaylock scales it with the output)
+RADIUS=78
+THICK=14
+
+# ---- one background per output -------------------------------------------
+# card layout around the ring center (cx, cy), in logical px :
+#   title bar 52 px, ring, two lines of text ; 10 px hard shadow
+render() {   # render <out.png> <width px> <height px> <scale>
+	local out="$1" w="$2" h="$3" s="$4"
+	px() { LC_ALL=C awk -v v="$1" -v s="$s" 'BEGIN { printf "%d", v * s + 0.5 }'; }
+
+	local cx=$((w / 2)) cy=$((h / 2))
+	local cw ch top left bw sh bar
+	cw=$(px 440); ch=$(px 380); bw=$(px 4); sh=$(px 10); bar=$(px 52)
+	top=$((cy - $(px 176))); left=$((cx - cw / 2))
+	local right=$((left + cw)) bottom=$((top + ch))
+	local sq=$(px 14) gap=$(px 8)
+
+	local bgsrc=("xc:$bg")
+	[[ -f "$wall" ]] && bgsrc=("tile:$wall")
+
+	"$im" -size "${w}x${h}" "${bgsrc[@]}" \
+		-fill "$shadow" -draw "rectangle $((left + sh)),$((top + sh)) $((right + sh)),$((bottom + sh))" \
+		-fill "$border" -draw "rectangle $left,$top $right,$bottom" \
+		-fill "$surface" -draw "rectangle $((left + bw)),$((top + bw)) $((right - bw)),$((bottom - bw))" \
+		-fill "$main" -draw "rectangle $((left + bw)),$((top + bw)) $((right - bw)),$((top + bar))" \
+		-fill "$border" -draw "rectangle $((left + bw)),$((top + bar)) $((right - bw)),$((top + bar + bw))" \
+		-fill "$red"    -stroke "$border" -strokewidth "$(px 2)" -draw "rectangle $((right - bw - gap - 3 * sq - 2 * gap)),$((top + bar / 2 - sq / 2 + bw / 2)) $((right - bw - gap - 2 * sq - 2 * gap)),$((top + bar / 2 + sq / 2 + bw / 2))" \
+		-fill "$yellow" -draw "rectangle $((right - bw - gap - 2 * sq - gap)),$((top + bar / 2 - sq / 2 + bw / 2)) $((right - bw - gap - sq - gap)),$((top + bar / 2 + sq / 2 + bw / 2))" \
+		-fill "$green"  -draw "rectangle $((right - bw - gap - sq)),$((top + bar / 2 - sq / 2 + bw / 2)) $((right - bw - gap)),$((top + bar / 2 + sq / 2 + bw / 2))" \
+		-stroke none \
+		${font:+-font "$font"} \
+		-fill "$ink" -pointsize "$(px 19)" -gravity NorthWest \
+		-annotate "+$((left + bw + $(px 16)))+$((top + bw + $(px 12)))" "󰌾  LOCKED" \
+		-fill "$fg" -pointsize "$(px 17)" -gravity North \
+		-annotate "+0+$((cy + $(px 112)))" "HELLO, ${USER^^}" \
+		-fill "$muted" -pointsize "$(px 13)" \
+		-annotate "+0+$((cy + $(px 142)))" "locked since $since  ·  type your password" \
+		"$out"
+}
+
+args=()
+while read -r name w h s; do
+	[[ -n "$name" ]] || continue
+	render "$CACHE/$name.png" "$w" "$h" "$s" && args+=(--image "$name:$CACHE/$name.png")
+done < <(swaymsg -t get_outputs 2>/dev/null | jq -r '.[] | select(.active) | "\(.name) \(.current_mode.width) \(.current_mode.height) \(.scale)"')
+
+# ---- lock ------------------------------------------------------------------
+n() { echo "${1#\#}"; }
+# key press segments on the black ring : light, so they don't merge with the inside
+hl="$fg"; [[ "$mode" == light ]] && hl="$surface"
+exec swaylock -f \
+	"${args[@]}" --scaling center \
+	--color "$(n "$bg")" \
+	--ignore-empty-password --show-failed-attempts --hide-keyboard-layout \
+	--indicator-caps-lock --indicator-idle-visible \
+	--indicator-radius "$RADIUS" --indicator-thickness "$THICK" \
+	--font 'JetBrainsMono Nerd Font' --font-size 18 \
+	--inside-color "$(n "$main")"           --ring-color "$(n "$border")" \
+	--inside-ver-color "$(n "$blue")"       --ring-ver-color "$(n "$border")" \
+	--inside-wrong-color "$(n "$red")"      --ring-wrong-color "$(n "$border")" \
+	--inside-clear-color "$(n "$surface")"  --ring-clear-color "$(n "$border")" \
+	--inside-caps-lock-color "$(n "$orange")" --ring-caps-lock-color "$(n "$border")" \
+	--line-uses-ring --separator-color "$(n "$border")" \
+	--key-hl-color "$(n "$hl")" --bs-hl-color "$(n "$red")" \
+	--caps-lock-key-hl-color "$(n "$hl")" --caps-lock-bs-hl-color "$(n "$red")" \
+	--text-color "$(n "$ink")" --text-ver-color "$(n "$ink")" --text-wrong-color "$(n "$ink")" \
+	--text-clear-color "$(n "$fg")" --text-caps-lock-color "$(n "$ink")"

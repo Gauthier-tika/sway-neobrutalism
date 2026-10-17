@@ -68,6 +68,7 @@ Without Quickshell, waybar clicks open `blueman-manager`, `pavucontrol` and `nm-
 | Toggle light/dark | right click on ☀/☾ or `$mod+Shift+t` |
 | Launcher | `$mod+r` |
 | Power menu | `$mod+x` |
+| Lock | `Alt+Ctrl+l` (hyprlock, or the neo-brutalism swaylock when hyprlock isn't installed) |
 | Panels | click the waybar icons (Esc or click outside to close) |
 
 The theme from the command line:
@@ -131,7 +132,7 @@ config/sway/
 ├── mako/ wofi/ rofi/ wlogout/
 ├── alacritty/ kitty/ foot/
 ├── chromium/               Chromium theme (generated)
-└── scripts/                launchers, brightness, sound, screenshots…
+└── scripts/                launchers, brightness, sound, screenshots, lockscreen (swaylock)…
 ```
 
 ## Credits
