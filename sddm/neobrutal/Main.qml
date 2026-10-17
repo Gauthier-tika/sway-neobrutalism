@@ -213,9 +213,16 @@ Rectangle {
         anchors.fill: parent
         onPaint: {
             const ctx = getContext("2d");
-            ctx.fillStyle = t.grid;
-            for (let x = 0; x < width; x += 48) ctx.fillRect(x, 0, 2, height);
-            for (let y = 0; y < height; y += 48) ctx.fillRect(0, y, width, 2);
+            // dot grid : one round dot every 32 px
+            const step = 32, r = 2.5;
+            ctx.fillStyle = Qt.darker(t.grid, t.dark ? 0.625 : 1.12);
+            ctx.beginPath();
+            for (let x = step / 2; x < width; x += step)
+                for (let y = step / 2; y < height; y += step) {
+                    ctx.moveTo(x + r, y);
+                    ctx.arc(x, y, r, 0, 2 * Math.PI);
+                }
+            ctx.fill();
         }
         Connections {
             target: t

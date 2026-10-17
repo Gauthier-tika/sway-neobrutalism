@@ -15,16 +15,23 @@ current_mode() {
 	[[ "$mode" == "light" || "$mode" == "dark" ]] && echo "$mode" || echo "light"
 }
 
-## Wallpaper : flat bg + grid tile ----------
+## Wallpaper : flat bg + dot grid tile (same as the SDDM theme) ----------
 apply_wallpaper() {
 	WALLPAPER="$WALL_DIR/neobrutal-$MODE.png"
-	if [[ ! -f "$WALLPAPER" ]]; then
-		mkdir -p "$WALL_DIR"
-		local im="magick"; command -v magick >/dev/null 2>&1 || im="convert"
-		"$im" -size 48x48 "xc:$bg" \
-			-fill "$grid" -draw "rectangle 0,0 47,1" -draw "rectangle 0,0 1,47" \
-			"$WALLPAPER"
-	fi
+	mkdir -p "$WALL_DIR"
+	local im="magick"; command -v magick >/dev/null 2>&1 || im="convert"
+	# dot color : grid lightened (dark) or darkened (light), like Qt.darker in SDDM
+	local k; [[ "$MODE" == "dark" ]] && k=160 || k=89   # percent
+	local hex="${grid#\#}" dot="" i v
+	for i in 0 2 4; do
+		v=$(( (16#${hex:i:2} * k + 50) / 100 ))
+		(( v > 255 )) && v=255
+		dot+="$(printf '%02X' "$v")"
+	done
+	# one 2.5px dot centered in a 32px tile
+	"$im" -size 32x32 "xc:$bg" \
+		-fill "#$dot" -draw "circle 16,16 18.5,16" \
+		"$WALLPAPER"
 	swaymsg -q "output * bg $WALLPAPER tile" 2>/dev/null
 }
 
