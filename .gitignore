@@ -14,6 +14,8 @@ config/sway/chromium/neobrutal-theme/
 config/sway/theme/.neobrutal_mode
 config/sway/theme/.neobrutal_accent
 config/sway/theme/.neobrutal_cursor_size
+config/sway/theme/.neobrutal_zoom
+config/sway/sway-zoom
 config/sway/theme/.mode_state
 config/sway/wallpapers/*
 !config/sway/wallpapers/.gitkeep

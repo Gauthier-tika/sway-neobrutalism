@@ -61,7 +61,7 @@ Sans Quickshell, les clics de la waybar ouvrent `blueman-manager`, `pavucontrol`
 
 | | |
 |---|---|
-| Thème (mode, couleur, curseur) | clic sur le bouton ☀/☾ de la waybar : panneau clair/sombre, nuancier, taille du curseur |
+| Thème (mode, couleur, curseur, zoom) | clic sur le bouton ☀/☾ de la waybar : panneau clair/sombre, nuancier, taille du curseur, zoom |
 | Basculer clair/sombre | clic droit sur ☀/☾ ou `$mod+Shift+t` |
 | Lanceur | `$mod+r` |
 | Menu d'extinction | `$mod+x` |
@@ -73,6 +73,7 @@ Le thème en ligne de commande :
 ~/.config/sway/theme/neobrutal.sh light|dark|toggle|apply|status
 ~/.config/sway/theme/neobrutal.sh accent yellow|red|blue|green|purple|orange|cyan|pink|default
 ~/.config/sway/theme/neobrutal.sh cursor-size 24|32|48|72|default
+~/.config/sway/theme/neobrutal.sh zoom 100|125|150|175|200|default
 ```
 
 La couleur principale colore les bordures sway, la barre, les menus, le curseur et l'écran de connexion. `default` revient aux couleurs des palettes.

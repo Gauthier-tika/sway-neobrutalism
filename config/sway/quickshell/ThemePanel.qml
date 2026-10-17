@@ -16,10 +16,13 @@ Card {
     property string pendingMode: ""
     property string pendingAccent: ""
     property int pendingSize: 0
+    property int pendingZoom: 0
     readonly property bool dark: pendingMode !== "" ? pendingMode === "dark" : Theme.dark
     readonly property string accentName: pendingAccent !== "" ? pendingAccent : (Theme.c.accent_name ?? "yellow")
     readonly property var cursorSizes: Theme.c.cursor_sizes ?? [24, 32, 48, 72]
     readonly property int cursorSize: pendingSize !== 0 ? pendingSize : (Theme.c.cursor_size ?? 24)
+    readonly property var zooms: Theme.c.zooms ?? [100, 125, 150, 175, 200]
+    readonly property int zoom: pendingZoom !== 0 ? pendingZoom : (Theme.c.zoom ?? 100)
 
     Connections {
         target: Theme
@@ -27,6 +30,7 @@ Card {
             panel.pendingMode = "";
             panel.pendingAccent = "";
             panel.pendingSize = 0;
+            panel.pendingZoom = 0;
         }
     }
 
@@ -48,11 +52,17 @@ Card {
         Quickshell.execDetached([panel.ctl, "cursor-size", String(size)]);
     }
 
+    function setZoom(z) {
+        if (z === Theme.c.zoom) return;
+        panel.pendingZoom = z;
+        Quickshell.execDetached([panel.ctl, "zoom", String(z)]);
+    }
+
     PanelHeader {
         icon: "󰏘"
         title: "Thème"
         tint: Theme.main
-        subtitle: "Bordures, barre, menus, curseur"
+        subtitle: "Couleurs, curseur, zoom"
     }
 
     SectionLabel { text: "Mode" }
@@ -125,6 +135,28 @@ Card {
                 text: modelData
                 active: modelData === panel.cursorSize
                 onClicked: panel.setCursorSize(modelData)
+            }
+        }
+    }
+
+    SectionLabel { text: "Zoom" }
+
+    Row {
+        id: zoomRow
+        width: parent.width
+        spacing: 8
+
+        Repeater {
+            model: panel.zooms
+
+            BButton {
+                required property int modelData
+                width: (zoomRow.width - (panel.zooms.length - 1) * zoomRow.spacing) / panel.zooms.length
+                padX: 2
+                fontSize: 12
+                text: modelData + "%"
+                active: modelData === panel.zoom
+                onClicked: panel.setZoom(modelData)
             }
         }
     }
