@@ -3,15 +3,22 @@
 LAYOUT="$HOME/.config/sway/wlogout/layout"
 STYLE="$HOME/.config/sway/wlogout/style.css"
 
+## portrait output (vertical screen) : stack the buttons in one column
+if swaymsg -t get_outputs | jq -e '.[] | select(.focused) | .rect.height > .rect.width' >/dev/null; then
+	PER_ROW=1; MARGIN_V=150; MARGIN_H=390
+else
+	PER_ROW=5; MARGIN_V=390; MARGIN_H=150
+fi
+
 if [[ ! $(pidof wlogout) ]]; then
 	wlogout --layout "${LAYOUT}" --css "${STYLE}" \
-		--buttons-per-row 5 \
+		--buttons-per-row "${PER_ROW}" \
 		--column-spacing 50 \
 		--row-spacing 50 \
-		--margin-top 390 \
-		--margin-bottom 390 \
-		--margin-left 150 \
-		--margin-right 150
+		--margin-top "${MARGIN_V}" \
+		--margin-bottom "${MARGIN_V}" \
+		--margin-left "${MARGIN_H}" \
+		--margin-right "${MARGIN_H}"
 else
 	pkill wlogout
 fi
